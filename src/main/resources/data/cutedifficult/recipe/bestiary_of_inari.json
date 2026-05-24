@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GBG",
+    "BWB",
+    "GBG"
+  ],
+  "key": {
+    "G": { "item": "minecraft:gold_ingot" },
+    "B": { "item": "minecraft:book" },
+    "W": { "item": "minecraft:writable_book" }
+  },
+  "result": {
+    "id": "cutedifficult:bestiary_of_inari",
+    "count": 1
+  }
+}

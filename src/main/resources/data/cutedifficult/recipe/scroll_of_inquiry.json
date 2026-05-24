@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "EFE",
+    "PPP"
+  ],
+  "key": {
+    "P": { "item": "minecraft:paper" },
+    "E": { "item": "minecraft:ender_pearl" },
+    "F": { "item": "minecraft:feather" }
+  },
+  "result": {
+    "id": "cutedifficult:scroll_of_inquiry",
+    "count": 4
+  }
+}
