@@ -2,122 +2,122 @@
 
 *"Cruel Universe Tortures Everyone"*
 
-**Майнкрафт слишком лёгкий.** Зомби тупые. Криперы видны издалека. Печки не взрываются. Лисы не убивают тебя файерболами за неправильное подношение.
+**Minecraft is too easy.** Zombies are dumb. Creepers are visible from a mile away. Furnaces don't explode. Foxes don't kill you with fireballs for the wrong offering.
 
-**Этот мод чинит все эти проблемы.**
+**This mod fixes all of that.**
 
-Ты будешь умирать. Много. Сундуки будут пустые. Лавочники будут жадные. Печки **будут** взрываться. Криперы заряжены, невидимы, и знают где ты живёшь.
+You will die. A lot. Chests will be empty. Villagers will be greedy. Furnaces **will** explode. Creepers spawn charged, invisible, and they know where you live.
 
-Зачем? Потому что только через страдание можно достичь духовного просветления. И единственный путь к силе — заключить пакт с 9 элементальными духами лис-кицунэ, которые тоже довольно хотят тебя убить, но иногда соглашаются на подношения.
+Why? Because spiritual enlightenment only comes through suffering. And the only path to real power is forming a pact with 9 elemental kitsune spirits, who also pretty much want to kill you, but occasionally accept offerings.
 
-Если становится слишком тяжко, напиши в чат **`я казуал`**. Никто тебя не осудит. *Кицунэ осудят. Но не я.*
-
----
-
-## Что это вообще такое
-
-Cute Difficult — это мод, который превращает ванильный Minecraft в брутальное японско-инспирированное путешествие. Три слоя:
-
-1. **Жестокий мир.** Мобы умнее, лут реже, окружение враждебно. У всего есть подвох. У кроватей нет. *Пока.*
-2. **9 кицунэ-духов.** Каждый со своей стихией, своим характером, своими подношениями. Они помнят кто им делал больно. Особенно тебе.
-3. **Качество предметов.** Каждый меч/инструмент/броня роллится в один из 5 тиров. Masterwork железо лучше Crude алмаза. Удачи.
+If it gets too rough, type **`i am casual`** in chat. Nobody will judge you. *The kitsune will. But I won't.*
 
 ---
 
-## Установка
+## What is this thing
 
-Нужно:
+Cute Difficult turns vanilla Minecraft into a brutal Japanese-inspired ordeal. Three layers:
+
+1. **Cruel world.** Mobs are smarter, loot is sparser, the environment is actively hostile. Everything has a catch. Beds don't. *Yet.*
+2. **9 kitsune spirits.** Each with their element, their personality, their offerings. They remember who hurt them. Especially you.
+3. **Item quality.** Every sword/tool/armor rolls into one of 5 tiers. Masterwork iron beats Crude diamond. Good luck.
+
+---
+
+## Installation
+
+You need:
 - **Minecraft 1.21.1**
 - **Fabric Loader 0.16.5+**
-- **Fabric API 0.102.1+1.21.1** или новее
+- **Fabric API 0.102.1+1.21.1** or newer
 - **Java 21**
 
-Кидай JAR в `.minecraft/mods/`. Работает в одиночке и на серверах одинаково — никаких отдельных билдов.
+Drop the JAR into `.minecraft/mods/`. Works on singleplayer and dedicated servers identically — no separate builds.
 
-При первом запуске мир автоматически в **CRUEL mode**. Переключение через чат или команды (ниже).
+On first launch the world is automatically in **CRUEL mode**. Switch via chat or commands (see below).
 
 ---
 
-## Что внутри
+## What's inside
 
-### Жестокость окружения
+### Environmental cruelty
 
-- Постоянный голод (низкий тир, но не сходит никогда)
-- Криперы спавнятся заряженными И невидимыми. Surprise.
-- Лошади всегда худшие по статам (HP, скорость, прыжок)
-- Зомби ломают двери. Радиус слежки увеличен в 3 раза. Они подкрепления вызывают.
-- Пауки прыгают и плюются паутиной
-- Скелеты переключаются в милли когда близко
-- 5% стрел — "снайперские": в 2 раза быстрее, в 1.5 раза больнее
-- Фантомы превратились в FPV-дроны: видят на 64 блока, оставляют дымный след, **взрываются** при ударе
-- Печки **перегреваются** после долгой работы и взрываются с силой TNT
-- Каждый лут-пул в сундуках откатывается с 50% шансом. Двенадцать процентов сундуков полностью пустые. Это **математика**, не баг.
-- Лавочники никогда не делают скидок. Цены растут от использования.
-- Крафт-стол на 15% сабботирует крафт когда закрываешь UI
-- Урожаи растут в 2.5 раза медленнее
-- Тотем бессмертия больше **не спасает**. ПКМ — рандомный позитивный бафф. Лотерея.
-- Все враждебные мобы умеют прыгать через стены и обрывы. Больше нельзя сидеть на заборе.
-- Зомби хватают и тянут к себе на 2 секунды
-- Magma cubes взрываются при тяжёлом приземлении
-- Piglin Brutes на низком HP входят в "blood frenzy" (Strength II + Speed I)
-- Ghast спавнит **одного** мини-гаста на 50% HP
-- Blazes стреляют веером из 3 фаерболов
+- Permanent low-tier hunger debuff that never goes away
+- Creepers spawn charged AND invisible. Surprise.
+- Horses always roll the worst stats (HP, speed, jump)
+- Zombies break doors. Follow range x3. They call reinforcements.
+- Spiders pounce and spit webs
+- Skeletons swap to melee when crowded
+- 5% of hostile arrows are "sniper shots": 2x speed, 1.5x damage
+- Phantoms became FPV drones: 64-block detection, smoke trails, **detonate** on impact
+- Furnaces **overheat** after sustained use and explode with TNT force
+- Every chest loot pool rolls at 50% chance. Twelve percent of multi-pool chests are completely empty. That's **math**, not a bug.
+- Villagers never give discounts. Prices rise with use.
+- Crafting tables 15% sabotage your craft when you close the UI
+- Crops grow 2.5x slower
+- Totems of Undying no longer save you. Right-click for a random positive buff. It's a gamble.
+- All hostile mobs jump over walls and ledges intelligently. No more fence-farming.
+- Zombies grab and drag you for 2 seconds
+- Magma cubes explode on hard landings
+- Piglin Brutes at low HP enter "blood frenzy" (Strength II + Speed I)
+- Ghasts spawn **one** mini-ghast at 50% HP
+- Blazes shoot 3-fireball fans
 
-### Девять Стихий
+### The Nine Elements
 
-Каждая кицунэ принадлежит одной из 9 стихий. У каждой — свой ками, своё подношение, своя биом-привязка:
+Each kitsune belongs to one of 9 elements. Each has its own kami, its own offering, its own biome affinity:
 
-| Стихия | Ками | Подношение | Где встретить |
+| Element | Kami | Offering | Where to find |
 |---|---|---|---|
-| **Kasai** (огонь) | Hi-no-Kagutsuchi | Magma cream | Саванна, Незер |
-| **Mizu** (вода) | Suijin | Тропическая рыба | Океан, болото |
-| **Daichi** (земля) | Ōyamatsumi | Amethyst shard | Горы, пещеры |
-| **Kaze** (ветер) | Shina-tsu-hiko | Phantom membrane | Ветреные биомы |
-| **Kaminari** (молния) | Raijin | Copper ingot | Везде во время грозы (25%) |
-| **Mori** (лес) | Kuku-no-chi | Sweet berries | Лес, тайга, джунгли |
-| **Kori** (лёд) | Yuki-onna | Blue ice | Снежные биомы |
-| **Yurei** (дух) | Mononoke | Echo shard | Deep Dark |
-| **Tengoku** (небо) | Amaterasu | Dragon breath | End, Y>200 |
+| **Kasai** (fire) | Hi-no-Kagutsuchi | Magma cream | Savanna, Nether |
+| **Mizu** (water) | Suijin | Tropical fish | Ocean, swamp |
+| **Daichi** (earth) | Ōyamatsumi | Amethyst shard | Mountains, caves |
+| **Kaze** (wind) | Shina-tsu-hiko | Phantom membrane | Windswept biomes |
+| **Kaminari** (lightning) | Raijin | Copper ingot | Anywhere during thunder (25%) |
+| **Mori** (forest) | Kuku-no-chi | Sweet berries | Forest, taiga, jungle |
+| **Kori** (ice) | Yuki-onna | Blue ice | Snowy biomes |
+| **Yurei** (spirit) | Mononoke | Echo shard | Deep Dark |
+| **Tengoku** (sky) | Amaterasu | Dragon breath | End, Y>200 |
 
-### Кицунэ имеют пассивки. С самого первого хвоста.
+### Kitsune have passives. From tail one.
 
-Каждая кицунэ **меняет мир вокруг** через свою стихию, плюс имеет иммунитет к одной категории урона:
+Every kitsune **changes the world around them** through their element, plus has immunity to one damage category:
 
-- **Kasai** растапливает лёд/снег в радиусе 6 блоков. Не получает урон от огня и лавы.
-- **Mizu** гасит огонь, увлажняет фермы. Не тонет.
-- **Daichi** регенерирует камень из булыжника, dirt → grass. Не задыхается в блоках.
-- **Kaze** мягко толкает entities в стороны от себя. Не получает fall damage.
-- **Kaminari** иногда бьёт молнией ближайшего hostile mob. Иммунитет к молниям.
-- **Mori** ускоряет рост растений на ~50%. Очищает poison со себя.
-- **Kori** замораживает воду в packed ice. Иммунитет к freeze.
-- **Yurei** периодически телепортируется как vex. Иммунитет к magic/wither.
-- **Tengoku** отгоняет phantoms, даёт hostiles Weakness. Иммунитет к fall damage. Светится в темноте.
+- **Kasai** melts ice/snow in a 6-block radius. Immune to fire and lava.
+- **Mizu** puts out fires, hydrates farmland. Never drowns.
+- **Daichi** regenerates stone from cobblestone, dirt → grass. Doesn't suffocate.
+- **Kaze** gently pushes entities away from itself. Immune to fall damage.
+- **Kaminari** occasionally strikes hostile mobs with lightning. Immune to lightning.
+- **Mori** speeds plant growth by ~50%. Cleanses poison from itself.
+- **Kori** freezes water into packed ice. Immune to freeze damage.
+- **Yurei** periodically teleports like a vex. Immune to magic/wither.
+- **Tengoku** drives off phantoms, gives hostiles Weakness. Immune to fall damage. Glows in the dark.
 
-Высокохвостые кицунэ ещё **атакуют** активно — фаерболами, ледяными лучами, ударами молнии, и тремя видами атак (single-target, AOE кольцом, луч на 14 блоков).
+High-tail kitsune also **attack** actively — fireballs, ice beams, lightning strikes, in three flavors (single-target, AOE ring, 14-block piercing beam).
 
-### Дружба
+### Friendship
 
-Скорми кицунэ её **правильное** подношение → +trust, +spirit.
+Feed a kitsune its **correct** offering → +trust, +spirit.
 
-При trust ≥ 30 можно **погладить** ПКМ пустой рукой. Сердечки и +1 trust (кулдаун 1 час).
+At trust ≥ 30 you can **pet** it (right-click with empty hand). Hearts and +1 trust (1-hour cooldown per fox).
 
-При trust ≥ 50 ночью лиса **сворачивается клубком** рядом с тобой. *Это самая важная фича в моде.*
+At trust ≥ 50 at night the fox **curls up** next to you. *This is the most important feature in the mod.*
 
-Дай ей **бирку имени** (через наковальню), кликни — имя сохранится навсегда. Имя слегка меняет её характер (через детерминированный хэш). "Sakura" всегда чуть гордее. "Kuro" любопытнее. И тэдэ.
+Give it a **name tag** (anvil-named), click — the name persists forever. The name slightly biases its personality (via deterministic hash). "Sakura" is always a touch prouder. "Kuro" is more curious. Etc.
 
-Дружелюбные взрослые с trust ≥ 50 иногда **рождают детёнышей** (30% шанс при загрузке). Кит наследует стихию мамы, но менее травмирован.
+Friendly adults with trust ≥ 50 occasionally **birth kits** (30% chance on chunk load). The kit inherits its mom's element but with less trauma.
 
-Если убьёшь маму — **дети** в радиусе 8 блоков 30 секунд сидят на её теле и плачут голубыми слезами. *Если ты это сделал — ты монстр и заслуживаешь всего что будет дальше.*
+If you kill its mom — the **kits** within 8 blocks sit at her body for 30 seconds weeping blue tear particles. *If you did this, you're a monster and you deserve everything that comes next.*
 
-### Свидетели не забывают
+### Witnesses don't forget
 
-Если ты убил кицунэ — все остальные кицунэ в радиусе 16 блоков **видят это**. Их trust к тебе сбрасывается до нуля. Witness-каунтер растёт. Они становятся враждебны, **независимо от прошлой дружбы**. Время не лечит. Только Великое Благословение Инари.
+If you kill a kitsune — every other kitsune within 16 blocks **sees it**. Their trust toward you resets to zero. Witness counter increments. They become hostile, **regardless of prior friendship**. Time doesn't heal. Only the Great Blessing of Inari.
 
-### Благословения и Великое Благословение
+### Blessings and the Great Blessing
 
-Когда Spirit в стихии ≥ 10, ты получаешь её **благословение** — пассивный status effect. Все 9 благословений могут стакаться:
+When Spirit in an element ≥ 10, you get its **Blessing** — a passive status effect. All 9 can stack:
 
-| Стихия | Эффект |
+| Element | Effect |
 |---|---|
 | Kasai | Fire Resistance |
 | Mizu | Water Breathing + Dolphin's Grace |
@@ -129,97 +129,97 @@ Cute Difficult — это мод, который превращает ванил
 | Yurei | Night Vision |
 | Tengoku | Hero of the Village |
 
-Когда **все 9** активны одновременно — **Великое Благословение Инари**. Это endgame.
+When **all 9** are active simultaneously — **the Great Blessing of Inari**. Endgame stuff.
 
-- +Regeneration II и Saturation поверх всего
-- **Все кицунэ становятся нейтральными** к тебе, независимо от trust или witness-каунта
-- Кьюби успокаиваются. Свидетели прощают.
+- +Regeneration II and Saturation on top of everything
+- **All kitsune become neutral** to you regardless of trust or witness count
+- Kyuubi calm down. Witnesses forgive.
 
-**НО.** Если ты ударишь кицунэ — она ответит, благословение Инари тебе не поможет. 10 секунд бешенства, потом она снова успокоится. Инари тебе **жизнь подарила**, не **лицензию убивать**.
+**BUT.** If you hit a kitsune, it'll retaliate — the Great Blessing won't protect you. 10 seconds of fury, then it calms back down. Inari granted you **life**, not a **license to kill**.
 
-### Бестиарий
+### The Bestiary
 
-**Scroll of Inquiry** (4 paper + 2 ender pearl + 1 feather = 4 свитка). ПКМ на кицунэ — записывает её в бестиарий.
+**Scroll of Inquiry** (4 paper + 2 ender pearl + 1 feather = 4 scrolls). Right-click a kitsune to log it in your bestiary.
 
-**Bestiary of Inari** (4 gold + 4 book + 1 writable book = 1 бестиарий). ПКМ — открывает кастомный GUI.
+**Bestiary of Inari** (4 gold + 4 book + 1 writable book = 1 bestiary). Right-click to open a custom GUI.
 
-45 entries: 9 стихий × 5 тиров хвостов (молодая, созревшая, почтенная, древняя, Кьюби). Соберёшь всё — ты задрот.
+45 entries total: 9 elements × 5 tail tiers (young, matured, venerable, ancient, Kyuubi). Collect them all and you're certified.
 
-### Качество предметов
+### Item Quality
 
-Каждый меч, инструмент, броня роллится в один из 5 тиров когда попадает к тебе в инвентарь:
+Every sword, tool, and piece of armor rolls into one of 5 tiers when it enters your inventory:
 
-| Тир | Множитель | Шанс | Цвет |
+| Tier | Multiplier | Chance | Color |
 |---|---|---|---|
-| Crude | 0.6× | 15% | Тёмно-серый |
-| Common | 0.85× | 40% | Белый |
-| Fine | 1.0× | 30% | Зелёный |
-| Superior | 1.2× | 12% | Голубой |
-| Masterwork | 1.5× | 3% | Золотой |
+| Crude | 0.6× | 15% | Dark Gray |
+| Common | 0.85× | 40% | White |
+| Fine | 1.0× | 30% | Green |
+| Superior | 1.2× | 12% | Aqua |
+| Masterwork | 1.5× | 3% | Gold |
 
-Crude железный меч делает 3.6 урона. Masterwork делает 9. **Охоться** за тиром, не за материалом.
+A Crude iron sword deals 3.6 damage. A Masterwork deals 9. **Hunt for tier**, not for material.
 
 ### Spirit HUD
 
-Справа в центре экрана — компактная панель показывает:
-- Все 9 элементов Spirit с цветными иконками
-- Karma (красная — кэгарэ, голубая — чистота)
-- Три золотые звезды когда Великое Благословение активно
+Right-center of your screen — a compact panel showing:
+- All 9 element Spirit values with colored icons
+- Karma (red = kegare, cyan = purity)
+- Three golden stars when the Great Blessing is active
 
-Каждый игрок видит свои данные. Никаких глобальных scoreboards.
+Each player sees their own data. No global scoreboards.
 
-Скрывается через клавишу **H** (можно переназначить в Options — Controls — Cute Difficult).
+Toggle with **H** (rebindable in Options → Controls → Cute Difficult).
 
 ---
 
-## Команды
+## Commands
 
 ```
-/cd info                  - текущий Spirit и Karma
-/cd mode cruel|peace      - переключить мод
-/cd godmode               - все Spirits = 100 (op)
-/cd hollow                - все Spirits = -100 (op)
-/cd reset                 - обнулить
-/cd spirit <element> <set|add> <n>  - изменить Spirit
-/cd karma <set|add> <n>   - изменить Karma
+/cd info                  - your current Spirit and Karma
+/cd mode cruel|peace      - toggle world mode
+/cd godmode               - set all Spirits to 100 (op)
+/cd hollow                - set all Spirits to -100 (op)
+/cd reset                 - zero everything
+/cd spirit <element> <set|add> <n>  - adjust Spirit
+/cd karma <set|add> <n>   - adjust Karma
 /cd fox info|tails|element|trust|personality|reroll|summon
 ```
 
-Шорткаты стихий: `fire water earth wind thunder forest ice spirit sky`
+Element shortnames: `fire water earth wind thunder forest ice spirit sky`
 
-Чат-команды для смены мода:
-- `я казуал` или `i am casual` — Peace mode
-- `я готов страдать` — возвращение в CRUEL
-
----
-
-## Лор (если интересно)
-
-В японской мифологии **кицунэ** — лисы-духи, посланницы Инари (ками риса, плодородия, удачи). Они имеют от 1 до 9 хвостов; 9-хвостые Кьюби — почти боги, тысячелетние существа способные обернуться человеком, поджечь горы хвостами, читать мысли.
-
-В этом моде **они везде**. Они появляются естественно в биомах своих стихий. Они слышат когда ты убиваешь их сестёр. Они **запоминают**.
-
-Путь игрока — это путь **парадокса**: ты ослаблен миром, который тебя ненавидит, но единственный способ стать сильнее — заслужить расположение существ, которые тоже тебя ненавидят. Каждая стихия — отдельный мини-арк. Каждое благословение — небольшое чудо. **Великое Благословение** — это когда вся вселенная наконец-то говорит "ладно, ты молодец".
-
-После этого, ты идёшь к финальному боссу. *Когда я его сделаю.*
+Chat triggers for mode switch:
+- `i am casual` or `я казуал` — switch to Peace mode
+- `i am ready to suffer` or `я готов страдать` — return to CRUEL
 
 ---
 
-## Известные проблемы
+## Lore (if you care)
 
-- Кицунэ иногда застревают в текстурах. Yurei телепортируются — им пофиг. Остальные могут страдать. *Ну, они в этом моде, страдание — это нормально.*
-- HUD может пересекаться с другими модами. F1 скрывает всё, H скрывает только наш.
-- Если у тебя 50+ кицунэ одновременно вокруг тебя в чанке, FPS падёт. Тебе **не нужно** 50 кицунэ. Зачем тебе?
+In Japanese mythology, **kitsune** are fox spirits, messengers of Inari (the kami of rice, fertility, prosperity). They have 1 to 9 tails; 9-tailed Kyuubi are near-gods, millennia-old beings capable of shapeshifting into humans, setting mountains on fire with their tails, reading minds.
 
----
+In this mod **they're everywhere**. They spawn naturally in their element's biomes. They hear when you murder their sisters. They **remember**.
 
-## Лицензия
+The player's journey is one of **paradox**: you're weakened by a world that hates you, but the only way to grow stronger is to earn the favor of beings that also hate you. Each element is its own mini-arc. Each blessing is a tiny miracle. The **Great Blessing** is when the entire universe finally says "okay, you did good."
 
-MIT. Делайте форки, делайте дополнения, делайте свой мод вдохновлённый этим. Только укажите credit где можно.
+After that, you go to the final boss. *When I finish making it.*
 
 ---
 
-## Автор
+## Known issues
+
+- Kitsune occasionally get stuck in textures. Yurei teleport — they don't care. Others may suffer. *Well, this is the suffering mod, suffering is on-brand.*
+- The HUD may overlap with other mods. F1 hides everything, H hides only ours.
+- If you have 50+ kitsune in one chunk around you, FPS will drop. You **don't need** 50 kitsune. Why would you?
+
+---
+
+## License
+
+MIT. Make forks, make addons, make your own mod inspired by this. Just give credit where reasonable.
+
+---
+
+## Author
 
 **Mr_Hronosin**
 

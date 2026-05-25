@@ -2,191 +2,191 @@
 
 *The "why" behind Cute Difficult.*
 
-Этот документ — для тех, кто хочет понять что **мы пытались сделать**, не только что получилось. Если ты просто хочешь играть — читай README. Если хочешь делать форк, или просто любопытно как мысль превратилась в код — оставайся.
+This document is for those who want to understand what **we were trying to do**, not just what shipped. If you just want to play — read the README. If you want to fork it, or you're just curious how an idea became code — stick around.
 
 ---
 
-## Фундаментальные принципы
+## Fundamental principles
 
-### 1. Жестокость должна быть **обоснованной**, не случайной
+### 1. Cruelty must be **justified**, not random
 
-Каждый "злой" механизм должен иметь **обоснование в лоре**. 50% сундуков откатываются не потому что "мод злой", а потому что **духи сундуков жадные и берут свою долю**. Печки взрываются потому что **они устают** (это ками огня, ками тоже могут перегореть). Криперы невидимы потому что в этом мире окружение **активно** враждебно — не просто пассивно опасно.
+Every "evil" mechanic must have a **reason in lore**. 50% of chest pools roll back not because "the mod hates you" but because **the chest spirits are greedy and take their cut**. Furnaces explode because **they get tired** (fire kami can burn out too). Creepers are invisible because in this world the environment is **actively** hostile — not just passively dangerous.
 
-Цель — игрок должен **видеть систему**, а не баг. Когда умирает от невидимого крипера, у него должна быть мысль "о, это в моде", не "о, это глитч".
+The goal — the player should **see the system**, not a bug. When they die to an invisible creeper, they should think "oh, that's the mod," not "oh, that's a glitch."
 
-### 2. Духовная прогрессия параллельна технической
+### 2. Spiritual progression runs parallel to technical
 
-Ванильный Minecraft даёт силу через материалы: дерево → камень → железо → алмаз. Cute Difficult добавляет **второй** трек: 9 благословений Инари через дружбу с кицунэ. Этот трек **не заменяет** материалы — он их дополняет.
+Vanilla Minecraft grants power through materials: wood → stone → iron → diamond. Cute Difficult adds a **second** track: 9 blessings of Inari through kitsune friendship. This track **doesn't replace** materials — it complements them.
 
-Это значит mid-game у игрока **две задачи**:
-- Прокачать качество брони/оружия (квалити-система)
-- Накопить Spirit в нескольких стихиях
+This means mid-game has **two tasks**:
+- Level up your armor/weapon quality (the quality system)
+- Accumulate Spirit in multiple elements
 
-Endgame — это когда **оба** трека на максимуме. Один без другого недостаточно.
+Endgame is when **both** tracks are maxed. One without the other isn't enough.
 
-### 3. Путь Мира — это **честная** опция
+### 3. The Path of Peace is an **honest** option
 
-Не все игроки хотят страдать. Есть `я казуал`, который отключает большинство жестоких механик. Это **не** "easy mode" с шеймингом — это **harmony mode**, где игрок решил жить в согласии с миром, а не воевать с ним.
+Not every player wants to suffer. There's `i am casual`, which disables most cruelty mechanics. This is **not** an "easy mode" with shaming — it's a **harmony mode**, where the player has chosen to live in accord with the world rather than war with it.
 
-Кицунэ всё равно есть. Подношения работают. Дракон ждёт. Просто пассивное давление мира снято.
+Kitsune are still there. Offerings still work. The dragon still waits. The passive ambient pressure is just removed.
 
-Мы **не наказываем** Peace mode. Не показываем шейминг-частицы. Не лочим контент. *Окей, может в финальном боссе будет один секрет недоступный в Peace, но это спойлер.*
+We **don't punish** Peace mode. No shame particles. No locked content. *Okay, maybe the final boss has one secret unavailable in Peace, but that's a spoiler.*
 
 ---
 
-## Shinto-флейвор
+## The Shinto flavor
 
-Я начал делать этот мод с поверхностного понимания "японская мифология", и постепенно через **геймдизайнерскую интуицию** случайно воспроизвёл академически точную структуру синтоизма:
+I started building this mod with a surface-level understanding of "Japanese mythology," and gradually through **game-design intuition** accidentally reproduced an academically accurate Shinto structure:
 
-- **Кадзамэ (kami)** — духи природных явлений. У нас это 9 элементальных кицунэ.
-- **Кэгарэ (kegare)** — ритуальное загрязнение. У нас это Karma (растёт от насилия, особенно над кицунэ).
-- **Мисоги (misogi)** — ритуальное очищение. У нас это **будущая** механика Sacred Springs (TODO).
-- **Тории (torii)** — врата, маркирующие священное пространство. **Будущие** Shrines of Inari.
-- **Дзин-дзя (jinja)** — святилища. **Будущие** структуры.
+- **Kami** — spirits of natural phenomena. For us, the 9 elemental kitsune.
+- **Kegare** — ritual pollution. For us, Karma (rises from violence, especially against kitsune).
+- **Misogi** — ritual purification. For us, the **future** Sacred Springs mechanic (TODO).
+- **Torii** — gates marking sacred space. **Future** Shrines of Inari.
+- **Jinja** — shrines. **Future** structures.
 
-Главная этическая ось японской культуры — не "good vs evil", а **чистое vs загрязнённое** (joe vs kegare). Это **именно** почему Spirit и Karma в моде — **отдельные** числа, не противоположности. Игрок может иметь высокий Spirit И высокую Karma — могущественный кицунэ-фаворит с кровью на руках. Это **трагическая** фигура, не "плохой парень". Геометрия имеет значение.
+The central ethical axis of Japanese culture isn't "good vs evil" but **pure vs polluted** (jōe vs kegare). This is **exactly** why in this mod, Spirit and Karma are **separate** numbers, not opposites. A player can have high Spirit AND high Karma — a powerful kitsune-favorite with blood on their hands. That's a **tragic** figure, not a "bad guy." Geometry matters.
 
-Имена ками — настоящие из синтоизма (Hi-no-Kagutsuchi, Suijin, и т.д.). Назначение их к 9 элементам — наша творческая интерпретация. Настоящий синтоизм не имеет 9 стихий; "5 стихий" это **китайское** Усин, не японское.
+The kami names are real Shinto deities (Hi-no-Kagutsuchi, Suijin, etc.). The assignment of them to 9 elements is our creative interpretation. Actual Shinto has no 9-element system; "5 elements" is **Chinese** Wuxing, not Japanese.
 
 ---
 
 ## Player Journey
 
-### Часы 1-5: Confused suffering
+### Hours 1-5: Confused suffering
 
-Игрок заходит, умирает дважды от заряженных невидимых криперов, теряет крафт-стол к саботажу, печка взрывается. Печатает "wtf за мод" в чат. Находит лису, получает фаербол в лицо, респавнится возле той же лисы на 4 хп. Гуглит.
+The player joins, dies twice to charged invisible creepers, loses a crafting table to sabotage, the furnace explodes. They type "wtf this mod" in chat. They find a fox, take a fireball to the face, respawn near the same fox at 4 HP. They Google.
 
-**Цель раздела:** игрок находит README или Design (этот документ), видит что **всё намеренно**, и либо квитит, либо коммитится. Мы хотим **больше** commit'ов чем rage-quit'ов. Это значит что ранние смерти должны быть **читаемыми**, не случайными. У каждой смерти должна быть **причина** на которую игрок может ткнуть.
+**The goal:** the player finds the README or this Design doc, realizes **it's all intentional**, and either quits or commits. We want **more** commits than rage-quits. Which means early deaths must be **legible**, not random. Every death needs a **reason** the player can point at.
 
-### Часы 5-20: Заключение сделки
+### Hours 5-20: Making the deal
 
-Игрок учится кормить кицунэ. Строит fox-friendly базу около саванны и фармит magma cream для Kasai-кицунэ которую назвал Акаибара. Первое благословение Fire Resistance. Первый Scroll of Inquiry, первая запись в бестиарии.
+The player learns to feed kitsune. Builds a fox-friendly base near a savanna and farms magma cream for a Kasai kitsune they've named Akaibara. First Fire Resistance blessing. First Scroll of Inquiry, first bestiary entry.
 
-Это когда духовный путь **становится реальным**. Игрок инвестировал в кицунэ; он её не убьёт; ему **важно** что она помнит.
+This is when the spiritual path becomes **real**. The player has invested in a fox; they won't kill it now; they **care** about what it remembers.
 
-### Часы 20-50: Гриндинг всех 9
+### Hours 20-50: Grinding all 9
 
-Игрок путешествует — океан для Mizu, горы для Daichi, Deep Dark для Yurei (страшно), End для Tengoku. Каждая стихия — новый кицунэ, новое подношение, новое благословение.
+The player travels — ocean for Mizu, mountains for Daichi, Deep Dark for Yurei (scary), End for Tengoku. Each element brings a new kitsune to befriend, a new offering to source, a new blessing to unlock.
 
-Mid-game pressure — это **дефицит качества** (quality). Common-тир везде, Superior редок, Masterwork — праздник. Игроки охотятся за тиром через объём крафта и удачу с лутом.
+The mid-game pressure is **quality scarcity**. Common-tier is everywhere; Superior is rare; Masterwork is a celebration. Players hunt for tier through crafting volume and loot luck.
 
-### Часы 50+: Великое Благословение
+### Hours 50+: The Great Blessing
 
-Когда все 9 элементов перешли порог — Великое Благословение Инари. Чат-блок. Эффекты пантеона. Универсальный мир со всеми кицунэ. Игрок построил то, что **мир признаёт**.
+When all 9 elements have crossed the threshold — the Great Blessing of Inari fires. Chat block. Pantheon effects. Universal kitsune peace. The player has built something the world **recognizes**.
 
-После этого — финальный босс (TODO — Hollow Lord, переработка End Dragon) и одна из двух концовок: **Liberation** (освобождение Awakened Dragon как компаньона) или **Iron Will** (отказ от лёгкой концовки).
+After that — the final boss (TODO — Hollow Lord, an End Dragon overhaul) and one of two endings: **Liberation** (freeing the Awakened Dragon as a companion) or **Iron Will** (refusing the easy ending).
 
 ---
 
-## Что реализовано (v1.0.0-beta)
+## What's implemented (v1.0.0-beta)
 
-Полный список в README. Кратко:
+Full list in the README. Briefly:
 
-**Окружающая жестокость:**
-- Все базовые механики (голод, криперы, лошади, мобы, печки, сундуки, лавочники, тотемы, краафт-стол, крипящие)
-- Прыгающие враждебные мобы
-- Зомби-хватание + reinforcement (с hard-cap)
-- Незер-баффы (blaze fan, ghast minion, magma cube explode, brute frenzy)
+**Environmental cruelty:**
+- All baseline mechanics (hunger, creepers, horses, mobs, furnaces, chests, villagers, totems, crafting, crops)
+- Jumping hostile mobs
+- Zombie grab + reinforcement (with hard-cap)
+- Nether buffs (blaze fan, ghast minion, magma cube explode, brute frenzy)
 
-**Кицунэ:**
-- 9 стихий с уникальными подношениями и характерами
-- Trust system с подношениями и петтингом
-- Naming через бирку + personality-bias по хэшу имени
-- Baby kitsune (kits) с mourning logic
-- Свидетели не забывают
-- Sleeping pose ночью
+**Kitsune:**
+- 9 elements with unique offerings and personalities
+- Trust system via offerings and petting
+- Naming via name tag + hash-based personality bias
+- Baby kitsune (kits) with mourning logic
+- Witnesses never forget
+- Sleeping pose at night
 
-**Кицунэ-пассивки:**
-- 9 environmental auras (Kasai растапливает, Mori растит, и т.д.)
-- 9 damage immunities (Kasai к огню, Kaminari к молнии, и т.д.)
+**Kitsune passives:**
+- 9 environmental auras (Kasai melts, Mori grows, etc.)
+- 9 damage immunities (Kasai → fire, Kaminari → lightning, etc.)
 
-**Боевая система:**
-- 3 варианта атак на стихию (basic 60% / AOE 25% / beam 15%)
-- Line-of-sight check для всех атак
-- FoxRageHandler для retaliation под Великим Благословением
+**Combat:**
+- 3 attack variants per element (basic 60% / AOE 25% / beam 15%)
+- Line-of-sight check for all attacks
+- FoxRageHandler for retaliation under the Great Blessing
 
 **Spirit & Blessings:**
 - 9 parallel blessings (per-element)
-- Великое Благословение Инари когда все 9 активны
-- Spirit HUD с иконками (right-center)
-- Toggle через H keybind
+- Great Blessing of Inari when all 9 active
+- Spirit HUD with icons (right-center)
+- Toggle via H keybind
 
-**Бестиарий:**
+**Bestiary:**
 - Scroll of Inquiry + Bestiary of Inari
 - Custom GUI screen
-- 45 entries (9 stihiy × 5 tail tiers)
+- 45 entries (9 elements × 5 tail tiers)
 
-**Качество предметов:**
-- 5 тиров с весами
-- Автоматический roll при попадании в инвентарь
+**Item Quality:**
+- 5 tiers with weighted distribution
+- Auto-roll on inventory entry
 - Combat multipliers (attacker/defender)
 
 ---
 
-## Что pending (после релиза)
+## What's pending (post-release)
 
-Roughly по приоритету:
+Roughly by priority:
 
-1. **Shrines of Inari** — процедурные структуры с торий и приёмником подношений. Пассивный regen Spirit при медитации.
-2. **Sacred Springs** — редкие водные структуры. Очищают Karma.
-3. **Spiritual contamination per-chunk** — кэгарэ радиация от насилия, распространяется, лечится мисоги.
-4. **Hollow Lord** — переработка End Dragon. 4-фазовый босс с пушками из подбашен в две концовки.
-5. **9-element compatibility matrix** — Kasai кицунэ не ладят с Mizu, специфические пары дают синергии.
-6. **Inner alchemy / pills** — HBM-tier deep mechanic. Очищенная духовная эссенция для роста хвостов привязанных кицунэ.
-7. **Mark of Fox's Wrath** — отслеживаемое проклятие активирующееся на multi-kitsune-killer'ах.
-8. **Greater Penance ritual** — очищение witness memory + Mark of Wrath дорогой ценой.
-9. **Awakened Dragon companion** — Liberation концовка endgame.
-10. **Iron Will achievement** — для игроков достигших дракона без кормления кицунэ.
-11. **Onigiri & dango** — крафтабельная еда работающая с любой стихией.
-12. **Constellation timing** — некоторые благословения активируются только в определённых фазах луны.
-13. **Visible tail-count rendering** — потребует render-mixin на FoxEntityRenderer.
-
----
-
-## Design constraints мы соблюли
-
-1. **Нет mixin на FoxEntity.** Заменили на KitsuneEntity subclass.
-2. **Нет exponential mob spawn chains.** Зомби и гасты вызывают максимум одного подкрепления, и подкрепление никогда не может позвать своё.
-3. **Нет client/server-split bugs.** Все мультиплеерные фичи используют proper packet flow (custom payloads, Server*Events).
-4. **Persistence корректна.** FoxData (теперь KitsuneData) живёт в entity NBT, round-trip на save/load, кэш в памяти — fast read path. После world reload память кицунэ выживает.
-
-## Design constraints что нас укусили
-
-1. **`net.minecraft.entity.passive.FoxEntity` имеет inner class `FoxData`.** Когда наш KitsuneEntity extends FoxEntity, Java auto-resolves "FoxData" к **vanilla** inner type, не наш. Стоило **часов** мучений в dev session. Переименовали наш на `KitsuneData`.
-2. **`UseItemCallback` order fragile.** Несколько подписчиков могут перешагнуть друг через друга.
-3. **`Item.use()` unreliable** в моде с активными UseItemCallback подписчиками. Логика в callback handlers, не Item subclass.
-4. **`PrioritizedGoal.hashCode()` NPE** если Goal subclass не вызвал `setControls()` в конструкторе. Всегда вызывать, даже с `EnumSet.noneOf(Control.class)`.
-5. **Vanilla `addTypeSpecificGoals` NPE** на наш KitsuneEntity subclass. Wrapped в try/catch в `readCustomDataFromNbt`.
-6. **Compact Middle Packages в IntelliJ** — рендерит `assets/cutedifficult/lang/` как `assets.cutedifficult.lang` (с точками), выглядит как один пакет, на самом деле вложенные папки. Если ресурсы не загружаются — **сначала** проверь эту настройку. Стоило часов.
-7. **Race condition при `/cd fox summon`** — vanilla FoxEntity спавнилось, потом моментально замещалось KitsuneEntity с рандомными данными через FoxSpawnHandler. Фикс: спавнить KitsuneEntity напрямую.
-8. **`SpiritData.set` silently no-op** если scoreboard objective не создан. Должен быть `ensureObjectives` вызов при server start. Был **существовавший** метод, никто не вызывал.
-
-## Архитектурный анализ
-
-**Cache + NBT hybrid это правильная архитектура для entity-attached data.**
-
-Pure NBT round-tripping — vanilla read paths (`readNbt → addTypeSpecificGoals`) могут NPE на кастомных subclasses. Pure in-memory cache — теряет данные на save.
-
-Гибрид: кэш — live read path, NBT записывается только на save/load boundaries. Это **выживает** обе ловушки.
-
-**Mass refactor через sed работает для широких semantic-changes.**
-
-Когда мы переименовывали FoxData → KitsuneData во всём проекте (15+ файлов), скрипт sed с регулярками сделал это за один проход. Главное — иметь distinct enough patterns чтобы не зацепить лишнее.
+1. **Shrines of Inari** — procedural structures with torii and offering basins. Passive Spirit regen on meditation.
+2. **Sacred Springs** — rare water structures. Cleanse Karma.
+3. **Spiritual contamination per-chunk** — kegare radiation from violence, spreads, treated by misogi.
+4. **Hollow Lord** — End Dragon overhaul. 4-phase boss with cannons from subordinate towers, two ending paths.
+5. **9-element compatibility matrix** — Kasai kitsune don't get along with Mizu, specific pairings give synergies.
+6. **Inner alchemy / pills** — HBM-tier deep mechanic. Purified spiritual essence for tail growth on bound kitsune.
+7. **Mark of Fox's Wrath** — tracked curse activating on multi-kitsune-killers.
+8. **Greater Penance ritual** — clear witness memory + Mark of Wrath at heavy cost.
+9. **Awakened Dragon companion** — Liberation ending at endgame.
+10. **Iron Will achievement** — for players reaching the dragon without ever feeding a kitsune.
+11. **Onigiri & dango** — crafted food that works with any element.
+12. **Constellation timing** — some blessings only activate during specific moon phases.
+13. **Visible tail-count rendering** — needs a render-mixin on FoxEntityRenderer.
 
 ---
 
-## Лор-философия
+## Design constraints we honored
 
-Главная **эмоциональная** ставка мода — это **витнесс-механика**. Это та фишка которая делает мод **гуманистическим** при всей его жестокости.
+1. **No mixin on FoxEntity.** Replaced with a KitsuneEntity subclass. Saved hours of debugging.
+2. **No exponential mob spawn chains.** Zombies and ghasts can summon at most one reinforcement each, and the reinforcement is permanently marked as un-summonable. Hard cap.
+3. **No client/server-split bugs.** Every multiplayer-sensitive feature uses proper packet flow (custom payloads, Server*Events).
+4. **Persistence is correct.** FoxData (now KitsuneData) lives in entity NBT, round-tripped on save/load, in-memory cache as fast read path. After world reload, fox memory survives.
 
-В обычных играх ты убиваешь монстра — он мертв, конец истории. В Cute Difficult:
-- Если у тебя есть **репутация** с одной кицунэ и ты убил **другую** в её присутствии — она запомнит. Навсегда. Никакие подарки её не вернут.
-- Если у тебя есть **дитёныш** (kit) рядом с матерью и ты убил мать — она **сидит на её теле** и плачет.
+## Design constraints that bit us
 
-Эти механики не делают игру **сложнее**. Они делают её **тяжелее**. Эмоционально. И это **намеренно**.
+1. **`net.minecraft.entity.passive.FoxEntity` has an inner class `FoxData`.** When our KitsuneEntity extends FoxEntity, Java auto-resolves "FoxData" to the **vanilla** inner type, not ours (inherited types win priority over imports). Cost **hours** of dev session pain. We renamed ours to `KitsuneData`.
+2. **`UseItemCallback` order is fragile.** Multiple subscribers can step on each other.
+3. **`Item.use()` is unreliable** in mods with active UseItemCallback subscribers. Move logic to callback handlers, not Item subclass.
+4. **`PrioritizedGoal.hashCode()` NPEs** if a Goal subclass didn't call `setControls()` in its constructor. Always call it, even with `EnumSet.noneOf(Control.class)`.
+5. **Vanilla `addTypeSpecificGoals` NPEs** on our KitsuneEntity subclass. Wrapped in try/catch in `readCustomDataFromNbt`.
+6. **Compact Middle Packages in IntelliJ** — renders `assets/cutedifficult/lang/` as `assets.cutedifficult.lang` (dotted), looks like one package, actually nested folders. If resources mysteriously won't load — **check this first**. Cost hours.
+7. **Race condition in `/cd fox summon`** — vanilla FoxEntity was spawning, then getting instantly replaced by KitsuneEntity with random data through FoxSpawnHandler. Fix: spawn KitsuneEntity directly, bypassing vanilla.
+8. **`SpiritData.set` silently no-ops** if the scoreboard objective doesn't exist. There must be an `ensureObjectives` call on server start. The method **existed**, nobody was calling it.
 
-Cute Difficult — это **исследование** идеи что **любое** действие имеет свидетелей. Что даже в виртуальном мире у твоих жертв есть **семья**. Что **великое благословение** не даёт **права** на безнаказанность.
+## Architectural analysis
 
-Это **rare** в games. Обычно игры или **полностью** игнорируют моральные импликации убийства (Skyrim — мирный житель спит, ты убил, все спокойны), или делают это **черно-белым** (Dishonless — chaos meter, плохо vs хорошо). Cute Difficult — серый. Кицунэ не **осуждают** тебя. Они **помнят**. И ведут себя соответственно. И ты **знаешь** что они помнят.
+**Cache + NBT hybrid is the right architecture for entity-attached data.**
 
-Это маленькая ставка. Может никто не заметит. Но если кто-то заметит — **они никогда не забудут** этот мод.
+Pure NBT round-tripping triggers vanilla read paths (`readNbt → addTypeSpecificGoals`) which can NPE on custom subclasses. Pure in-memory cache loses data on save.
+
+Hybrid: cache as live read path, NBT only at save/load boundaries. This **survives both** pitfalls.
+
+**Mass refactor through sed works for broad semantic changes.**
+
+When we renamed FoxData → KitsuneData across the whole project (15+ files), a sed script with regex did it in one pass. Key: have distinct enough patterns to not catch extra stuff.
+
+---
+
+## Lore philosophy
+
+The main **emotional** bet of the mod is the **witness mechanic**. It's the thing that makes the mod **humanistic** despite all its cruelty.
+
+In normal games you kill a monster, it's dead, end of story. In Cute Difficult:
+- If you have **a reputation** with one kitsune and you kill **another** in its presence — it'll remember. Forever. No amount of gifts brings it back.
+- If you have a **kit** near its mom and you kill the mom — the kit **sits at her body** and weeps.
+
+These mechanics don't make the game **harder**. They make it **heavier**. Emotionally. And that's **deliberate**.
+
+Cute Difficult is an **exploration** of the idea that **every** action has witnesses. That even in a virtual world your victims have **families**. That a **Great Blessing** doesn't grant the **right** to impunity.
+
+This is **rare** in games. Usually games either **completely** ignore moral implications of killing (Skyrim — civilian is sleeping, you kill, everyone's fine), or make it **black-and-white** (Dishonored — chaos meter, bad vs good). Cute Difficult is grey. The kitsune don't **judge** you. They **remember**. And they behave accordingly. And you **know** they remember.
+
+It's a small bet. Maybe nobody will notice. But if someone does — **they'll never forget** this mod.

@@ -1,81 +1,81 @@
 # Changelog
 
-История изменений Cute Difficult, в обратном хронологическом порядке.
+All notable changes to Cute Difficult, in reverse chronological order.
 
-Версионирование было неформальным во время разработки. v1.0.0-beta — **первый публичный релиз**.
+Versioning was informal during development. v1.0.0-beta is the **first public release**.
 
 ---
 
 ## v1.0.0-beta — First Public Release
 
-The mod is feature-complete enough to release. Бывают баги, бывают TODO, но **главное работает**.
+The mod is feature-complete enough to release. There will be bugs, there are TODOs, but **the core works**.
 
-### Релизное состояние
-- 9 элементальных кицунэ с уникальными характерами, подношениями, и пассивками
-- 9 параллельных благословений + Великое Благословение
-- Trust/friendship arc с петтингом, именованием, baby kitsune
-- Witness memory с propagation
-- Spirit HUD с компактными иконками
-- 5-тиерная quality система
-- Кастомный бестиарий с GUI
+### Release state
+- 9 elemental kitsune with unique personalities, offerings, and passives
+- 9 parallel blessings + the Great Blessing
+- Friendship arc with petting, naming, baby kitsune
+- Witness memory with propagation
+- Spirit HUD with compact icons
+- 5-tier quality system
+- Custom bestiary with GUI
 
-### Что было сделано в v0.9.x → v1.0.0
+### What got done in v0.9.x → v1.0.0
 
 #### v0.9.8 — Kitsune Passives Update
 
-Все кицунэ с 1-го хвоста теперь имеют environmental ауры и element-immunities.
+All kitsune from tail 1 now have environmental auras and element immunities.
 
 **Added:**
-- 9 environmental ауры (Kasai melts ice, Mori speeds growth, Kaminari strikes hostiles, etc.)
+- 9 environmental auras (Kasai melts ice, Mori speeds growth, Kaminari strikes hostiles, etc.)
 - 9 damage immunities (Kasai → fire/lava, Kaminari → lightning, etc.)
-- KitsunePassivesHandler — оба слоя в одном handler'е, server tick + ALLOW_DAMAGE event
+- KitsunePassivesHandler — both layers in one handler, server tick + ALLOW_DAMAGE event
 
 #### v0.9.7 — Fox Rage + Icon HUD
 
 **Added:**
-- FoxRageHandler — кицунэ помнит игрока который её ударил, активирует retaliate на 10 секунд **даже** под Великим Благословением
-- Compact icon HUD — заменили "✦ Great Blessing of Inari ✦" text который overflow'ил панель на три золотые звезды + per-element иконки (сверкающая для активных, серая точка для неактивных)
+- FoxRageHandler — kitsune remembers the player who hit them and retaliates for 10 seconds **even** under the Great Blessing
+- Compact icon HUD — replaced the "✦ Great Blessing of Inari ✦" text that overflowed the panel with three golden stars + per-element icons (sparkle for active, gray dot for inactive)
 
 **Changed:**
-- FoxHostility.canAttack теперь проверяет rage **до** Great Blessing check
+- FoxHostility.canAttack now checks rage **before** the Great Blessing check
 
 #### v0.9.6 — Critical Fixes
 
 **Fixed:**
-- `/cd fox summon` спавнил неправильную лису. Race condition: спавнилось vanilla FoxEntity → моментально замещалось через FoxSpawnHandler с **случайной** стихией и **случайным** числом хвостов, перезаписывая то что игрок просил. Fix — спавнить KitsuneEntity напрямую, минуя vanilla.
-- ResonanceBlessingHandler пропускал игроков в Creative. Это означало что в testing'е (всегда в Creative) благословения **никогда** не работали. Removed creative skip — только Spectator теперь пропускается.
+- `/cd fox summon` was spawning the wrong fox. Race condition: a vanilla FoxEntity was being spawned → instantly replaced by FoxSpawnHandler with **random** element and **random** tail count, overwriting what the player requested. Fix — spawn KitsuneEntity directly, bypassing vanilla.
+- ResonanceBlessingHandler skipped players in Creative. Which meant during testing (always in Creative) blessings **never** worked. Removed the creative skip — only Spectator is excluded now.
 
 #### v0.9.5 — Spirit System Repair
 
 **Fixed:**
-- Spirit команды (`/cd spirit X add N`) показывали правильный текст но **ничего не сохраняли**. Корневая причина: `SpiritData.ensureObjectives` существовала как метод но **никто её не вызывал**. SpiritData.set с null objective — молча no-op. Fix — добавили вызов в SERVER_STARTED.
-- Игроки заходили без вызова `SpiritData.initializePlayer`. Fix — добавили в JOIN event.
+- Spirit commands (`/cd spirit X add N`) showed the right text but **saved nothing**. Root cause: `SpiritData.ensureObjectives` existed as a method but **nobody was calling it**. SpiritData.set with null objective was silently no-op. Fix — added the call to SERVER_STARTED.
+- Players were joining without `SpiritData.initializePlayer` being called. Fix — added it to the JOIN event.
 
 #### v0.9.4 — The Great Refactor
 
-Самая болезненная сессия в истории мода. Мы потратили **часы** пытаясь скомпилировать ошибку:
+The most painful session in the mod's history. We spent **hours** trying to compile this error:
 ```
 required: Type
 found: Element,FoxPersonality,int,int,long,int,String,long
 ```
 
-Оказалось — **vanilla `net.minecraft.entity.passive.FoxEntity` имеет inner class с именем `FoxData`**. Когда наш `KitsuneEntity extends FoxEntity` ссылался на `FoxData`, Java auto-resolves к vanilla inner type (наследуемые typesв имеют приоритет над импортами), не наш. Все эти "method not found" ошибки были про vanilla FoxData, не наш.
+Turned out — **vanilla `net.minecraft.entity.passive.FoxEntity` has an inner class named `FoxData`**. When our `KitsuneEntity extends FoxEntity` referenced `FoxData`, Java auto-resolves to the vanilla inner type (inherited types win priority over imports), not ours. All those "method not found" errors were about the vanilla FoxData, not ours.
 
 **Changed:**
-- Mass rename: `com.cutedifficult.spirit.FoxData` → `com.cutedifficult.spirit.KitsuneData`. 15+ файлов через sed.
-- Разделили `KitsuneData` (data holder с public final fields) и `FoxStorage` (cache + NBT logic). Один класс одна ответственность.
-- Удалили back-compat 6-arg конструктор, заменили на `KitsuneData.of6(...)` static factory.
+- Mass rename: `com.cutedifficult.spirit.FoxData` → `com.cutedifficult.spirit.KitsuneData`. 15+ files via sed.
+- Split `KitsuneData` (data holder with public final fields) and `FoxStorage` (cache + NBT logic). One class one responsibility.
+- Removed back-compat 6-arg constructor, replaced with `KitsuneData.of6(...)` static factory.
 
 #### v0.9.x — Client HUD + Persistence
 
 **Added:**
 - Spirit HUD overlay (server-to-client packet flow). Replaced broken vanilla sidebar scoreboard.
-- Toggle keybind (H by default, rebindable в Controls).
-- Background fade 60% opacity для читаемости.
+- Toggle keybind (H by default, rebindable in Controls).
+- Background fade at 60% opacity for readability.
 - Right-center positioning.
 
 **Fixed:**
-- FoxData persistence across world reload. Гибрид cache + NBT, с try/catch вокруг `super.readCustomDataFromNbt` для vanilla NPE.
+- FoxData persistence across world reload. Hybrid cache + NBT, with try/catch around `super.readCustomDataFromNbt` for the vanilla NPE.
 
 ---
 
@@ -88,8 +88,8 @@ Soft features balancing the cruelty.
 - **Mourning** — when an adult kitsune dies, all kits within 8 blocks sit at her body and weep splash particles for 30 seconds.
 - **Sleeping pose** — at night (game time 13000–23000), kitsune with trust ≥ 50 and a player nearby curl up.
 - **Petting** — right-click eligible (trust ≥ 30) kitsune with empty main hand. +1 trust, 1-hour real-time cooldown per fox.
-- **Name binding via name tag** — apply vanilla-named name tag to bind a permanent custom name. Hash deterministically biases personality.
-- **All hostile mobs jump intelligently** — no more standing on a fence farming.
+- **Name binding via name tag** — apply a vanilla-named name tag to bind a permanent custom name. Hash deterministically biases personality.
+- **All hostile mobs jump intelligently** — no more standing on a fence and farming.
 
 ---
 
@@ -104,13 +104,13 @@ Restored HP, shifted difficulty to gear quality.
 
 **Changed:**
 - Player max HP restored to 20 hearts
-- Stripped legacy half-HP modifier on join
+- Legacy half-HP modifier stripped on join
 
 ---
 
 ## v0.6.x — Stability & Persistence
 
-Long bugfix sequence что дала финальную архитектуру.
+A long bugfix sequence that produced the final architecture.
 
 **Fixed:**
 - FoxData persistence across world reloads (hybrid cache + NBT)
@@ -152,7 +152,7 @@ Rewrote blessings.
 Painful AI rewrite.
 
 **Changed:**
-- Abandoned FoxEntityMixin approach. KitsuneEntity extends FoxEntity as separate type.
+- Abandoned the FoxEntityMixin approach. KitsuneEntity extends FoxEntity as a separate type.
 - Custom goal set (initGoals doesn't call super).
 
 **Fixed:**
@@ -167,7 +167,7 @@ Painful AI rewrite.
 
 ## v0.3 — The Kitsune Birth
 
-Самая амбициозная сессия. Built the core spiritual system from nothing.
+The most ambitious session. Built the core spiritual system from nothing.
 
 **Added:**
 - 9 elements with kami names, offerings, colors, biome affinity
@@ -214,22 +214,22 @@ Painful AI rewrite.
 
 ## Notes from the Journey
 
-Этот мод был построен в долгой коллаборативной пар-кодинг сессии. Несколько повторяющихся ловушек worth flagging для будущих разработчиков (включая будущего меня):
+This mod was built in a long collaborative pair-coding session. Several recurring pitfalls worth flagging for future devs (including future me):
 
-1. **The Compact Middle Packages trap.** IntelliJ Project View может рендерить `assets/cutedifficult/models/item/` как `assets.cutedifficult.model.item` — три точки выглядят как одна папка с длинным именем. File system правильный; IntelliJ просто умничает. Если ресурсы загадочно не работают — **первым делом** проверь эту настройку. Цена пропуска: часы.
+1. **The Compact Middle Packages trap.** IntelliJ Project View can render `assets/cutedifficult/models/item/` as `assets.cutedifficult.model.item` — three dots looking like one folder with a long name. The file system is correct; IntelliJ is just being clever. If resources mysteriously won't load — **check this setting first**. Cost of skipping: hours.
 
-2. **Vanilla inner class shadows your import.** Если ты `extends` vanilla класс и пишешь идентификатор который совпадает с vanilla inner type — наследуемые типы выигрывают приоритет. Используй уникальные имена или fully-qualified imports.
+2. **A vanilla inner class shadows your import.** If you `extends` a vanilla class and write an identifier that matches a vanilla inner type — inherited types win priority. Use unique names or fully-qualified imports.
 
-3. **`Item.use()` ненадёжно.** Другие UseItemCallback подписчики могут перехватить chain. Логика в callback handlers, не Item subclass.
+3. **`Item.use()` is unreliable.** Other UseItemCallback subscribers can intercept the chain. Logic in callback handlers, not the Item subclass.
 
-4. **Cache + NBT — правильная архитектура для entity-attached data.** Pure NBT round-trip триггерит vanilla code paths (`readNbt → addTypeSpecificGoals`) которые могут NPE на custom subclasses. Pure in-memory cache теряет данные на save. Hybrid выживает обе ловушки.
+4. **Cache + NBT is the right architecture for entity-attached data.** Pure NBT round-tripping triggers vanilla code paths (`readNbt → addTypeSpecificGoals`) that can NPE on custom subclasses. Pure in-memory cache loses data on save. The hybrid survives both.
 
-5. **Exponential spawn bugs неожиданно легко написать.** Всегда cap reinforcement chains: parent flag "has summoned", children flag "cannot summon". Test что два consecutive low-HP triggera не compound'ятся.
+5. **Exponential spawn bugs are surprisingly easy to write.** Always cap reinforcement chains: parent flag "has summoned", children flag "cannot summon". Test that two consecutive low-HP triggers don't compound.
 
-6. **Spirit/Karma — orthogonal, не противоположные.** Высокий Spirit + высокая Karma = трагический герой. Не оппозиция, а **геометрия** этической модели Синто.
+6. **Spirit/Karma are orthogonal, not opposites.** High Spirit + high Karma = tragic hero. Not opposition, but the **geometry** of the Shinto ethical model.
 
-7. **Когда видишь странные symbol errors на тысячах строк** — проверь не impostor ли class shadow'ит твой import. См. lesson #2.
+7. **When you see weird symbol errors across thousands of lines** — check if there's an impostor class shadowing your import. See lesson #2.
 
-8. **Когда команды "работают" текстом но не имеют эффекта** — проверь что underlying state actually persists. Scoreboard objectives must exist before you can set scores on them.
+8. **When commands "work" by text but have no effect** — check that underlying state actually persists. Scoreboard objectives must exist before you can set scores on them.
 
-9. **Refactoring through `sed`** — если все ошибки одного pattern'а, mass replacement по regex быстрее чем file-by-file editing. Цена ошибки регулярки тоже одна — но обнаруживается одновременно.
+9. **Refactoring through `sed`** — if all errors are one pattern, mass replacement via regex is faster than file-by-file editing. The cost of a regex error is one too — but it surfaces all at once.
