@@ -2,7 +2,8 @@ package com.cutedifficult.entity.ai;
 
 import com.cutedifficult.entity.KitsuneEntity;
 import com.cutedifficult.event.FoxAbilityHandler;
-import com.cutedifficult.spirit.FoxData;
+import com.cutedifficult.spirit.KitsuneData;
+import com.cutedifficult.spirit.FoxStorage;
 import com.cutedifficult.spirit.FoxStats;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -42,31 +43,20 @@ public class KitsuneAttackGoal extends Goal {
 
     /** Combined eligibility check used by both canStart and shouldContinue. */
     private boolean isEligible() {
-        FoxData data = readData();
-        if (data == null) return false;
-        if (data.tails() < MIN_TAILS) return false;
-
-        // Great Blessing of Inari makes ALL kitsune neutral, regardless
-        // of trust/witness state. Check via nearest player; if any player
-        // in range has it, none of them get attacked.
-        ServerPlayerEntity candidateTarget = findTarget();
-        if (candidateTarget != null
-            && com.cutedifficult.event.ResonanceBlessingHandler.hasGreatBlessing(candidateTarget)) {
-            return false;
-        }
-
-        // Trust gate: friendly foxes don't attack. BUT witnessed killings
-        // override friendliness.
-        if (data.witnessedKills() > 0) return true;
-        if (data.trustLevel() >= FRIENDLY_TRUST_THRESHOLD) return false;
-        return true;
+        KitsuneData data = readData();
+        if (data == null || data.tails < MIN_TAILS) return false;
+        if (this.target == null) return false;
+        return com.cutedifficult.spirit.FoxHostility.canAttackWithLineOfSight(this.kitsune, this.target);
     }
 
     @Override
     public boolean canStart() {
-        if (!isEligible()) return false;
+        KitsuneData data = readData();
+        if (data == null || data.tails < MIN_TAILS) return false;
         ServerPlayerEntity nearest = findTarget();
         if (nearest == null) return false;
+        // Apply hostility check using found target.
+        if (!com.cutedifficult.spirit.FoxHostility.canAttackWithLineOfSight(this.kitsune, nearest)) return false;
         this.target = nearest;
         return true;
     }
@@ -82,8 +72,8 @@ public class KitsuneAttackGoal extends Goal {
     @Override
     public void start() {
         this.ticksUntilCast = INITIAL_DELAY;
-        FoxData data = readData();
-        this.castCooldown = data == null ? 200 : FoxStats.abilityCooldownTicks(data.tails());
+        KitsuneData data = readData();
+        this.castCooldown = data == null ? 200 : FoxStats.abilityCooldownTicks(data.tails);
     }
 
     @Override
@@ -98,7 +88,7 @@ public class KitsuneAttackGoal extends Goal {
 
         this.kitsune.getLookControl().lookAt(this.target, 30f, 30f);
 
-        FoxData data = readData();
+        KitsuneData data = readData();
         if (data == null) return;
         if (!(this.kitsune.getWorld() instanceof ServerWorld serverWorld)) return;
 
@@ -107,8 +97,8 @@ public class KitsuneAttackGoal extends Goal {
         this.ticksUntilCast = this.castCooldown + this.random.nextInt(20);
     }
 
-    private FoxData readData() {
-        return FoxData.getOrCreate(this.kitsune, this.random);
+    private KitsuneData readData() {
+        return FoxStorage.getOrCreate(this.kitsune, this.random);
     }
 
     private ServerPlayerEntity findTarget() {

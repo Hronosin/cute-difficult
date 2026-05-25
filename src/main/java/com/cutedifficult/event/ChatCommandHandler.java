@@ -67,11 +67,11 @@ public final class ChatCommandHandler {
         CuteDifficult.currentMode = DifficultyMode.PATH_OF_PEACE;
 
         // Restore HP to vanilla.
-        PlayerJoinHandler.removeHalfHp(player);
-        EntityAttributeInstance maxHealth = player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
-        if (maxHealth != null) {
-            player.setHealth((float) maxHealth.getValue());
-        }
+        player.sendMessage(
+                net.minecraft.text.Text.literal("You have chosen the Path of Peace.")
+                        .formatted(net.minecraft.util.Formatting.AQUA, net.minecraft.util.Formatting.ITALIC),
+                false
+        );
 
         // Public announcement — the shame is part of the mechanic.
         Text announcement = Text.literal("[LOSS OF SPIRIT] ")
@@ -103,7 +103,11 @@ public final class ChatCommandHandler {
         }
 
         CuteDifficult.currentMode = DifficultyMode.CRUEL;
-        PlayerJoinHandler.applyHalfHp(player);
+        player.sendMessage(
+                net.minecraft.text.Text.literal("You return to suffering. The cruel world watches you again.")
+                        .formatted(net.minecraft.util.Formatting.DARK_RED, net.minecraft.util.Formatting.ITALIC),
+                false
+        );
 
         Text announcement = Text.literal("[RETURNED] ")
             .formatted(Formatting.GOLD)

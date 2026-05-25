@@ -1,7 +1,8 @@
 package com.cutedifficult.item;
 
 import com.cutedifficult.spirit.BestiaryData;
-import com.cutedifficult.spirit.FoxData;
+import com.cutedifficult.spirit.KitsuneData;
+import com.cutedifficult.spirit.FoxStorage;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -51,7 +52,7 @@ public class ScrollOfInquiryItem extends Item {
         if (!(user instanceof ServerPlayerEntity serverPlayer)) return ActionResult.PASS;
         if (!(user.getWorld() instanceof ServerWorld serverWorld)) return ActionResult.PASS;
 
-        FoxData data = FoxData.getOrCreate(fox, RANDOM);
+        KitsuneData data = FoxStorage.getOrCreate(fox, RANDOM);
         boolean isNew = BestiaryData.recordEntry(serverPlayer, data);
 
         if (!isNew) {
@@ -82,8 +83,8 @@ public class ScrollOfInquiryItem extends Item {
         serverPlayer.sendMessage(
             Text.literal("Recorded: ")
                 .formatted(Formatting.GOLD)
-                .append(Text.literal(data.element().kamiName() + " kitsune (" + tailTier(data.tails()) + ")")
-                    .formatted(data.element().color())),
+                .append(Text.literal(data.element.kamiName() + " kitsune (" + tailTier(data.tails) + ")")
+                    .formatted(data.element.color())),
             false
         );
 

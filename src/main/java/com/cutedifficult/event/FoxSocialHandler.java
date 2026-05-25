@@ -1,7 +1,8 @@
 package com.cutedifficult.event;
 
 import com.cutedifficult.CuteDifficult;
-import com.cutedifficult.spirit.FoxData;
+import com.cutedifficult.spirit.KitsuneData;
+import com.cutedifficult.spirit.FoxStorage;
 import com.cutedifficult.util.DifficultyMode;
 import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -39,7 +40,7 @@ public final class FoxSocialHandler {
      * same-element witnesses → bigger reward).
      */
     public static int sameElementNearby(ServerWorld world, FoxEntity fox) {
-        FoxData data = FoxData.getOrCreate(fox, new Random());
+        KitsuneData data = FoxStorage.getOrCreate(fox, new Random());
         Box box = new Box(
             fox.getX() - SOCIAL_RADIUS, fox.getY() - SOCIAL_RADIUS, fox.getZ() - SOCIAL_RADIUS,
             fox.getX() + SOCIAL_RADIUS, fox.getY() + SOCIAL_RADIUS, fox.getZ() + SOCIAL_RADIUS
@@ -47,8 +48,8 @@ public final class FoxSocialHandler {
         List<FoxEntity> nearby = world.getEntitiesByClass(FoxEntity.class, box, f -> f != fox && f.isAlive());
         int count = 0;
         for (FoxEntity other : nearby) {
-            FoxData od = FoxData.getOrCreate(other, new Random());
-            if (od.element() == data.element()) count++;
+            KitsuneData od = FoxStorage.getOrCreate(other, new Random());
+            if (od.element == data.element) count++;
         }
         return count;
     }

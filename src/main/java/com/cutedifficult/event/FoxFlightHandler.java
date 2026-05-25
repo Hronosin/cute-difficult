@@ -1,7 +1,8 @@
 package com.cutedifficult.event;
 
 import com.cutedifficult.CuteDifficult;
-import com.cutedifficult.spirit.FoxData;
+import com.cutedifficult.spirit.KitsuneData;
+import com.cutedifficult.spirit.FoxStorage;
 import com.cutedifficult.spirit.FoxStats;
 import com.cutedifficult.util.DifficultyMode;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -78,9 +79,9 @@ public final class FoxFlightHandler {
     }
 
     private static void maybeFly(ServerWorld world, FoxEntity fox) {
-        FoxData data = FoxData.getOrCreate(fox, RANDOM);
+        KitsuneData data = FoxStorage.getOrCreate(fox, RANDOM);
 
-        if (!FoxStats.canFly(data.element(), data.tails())) {
+        if (!FoxStats.canFly(data.element, data.tails)) {
             // Defensive: if this fox isn't supposed to fly but somehow has
             // no-gravity set (e.g., from a previous state), clear it.
             if (fox.hasNoGravity()) {

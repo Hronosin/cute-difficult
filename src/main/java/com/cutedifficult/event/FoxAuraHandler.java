@@ -2,7 +2,8 @@ package com.cutedifficult.event;
 
 import com.cutedifficult.CuteDifficult;
 import com.cutedifficult.spirit.Element;
-import com.cutedifficult.spirit.FoxData;
+import com.cutedifficult.spirit.KitsuneData;
+import com.cutedifficult.spirit.FoxStorage;
 import com.cutedifficult.util.DifficultyMode;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.entity.passive.FoxEntity;
@@ -62,27 +63,27 @@ public final class FoxAuraHandler {
     }
 
     private static void emitAura(ServerWorld world, FoxEntity fox) {
-        FoxData data = FoxData.getOrCreate(fox, RANDOM);
-        int tails = data.tails();
+        KitsuneData data = FoxStorage.getOrCreate(fox, RANDOM);
+        int tails = data.tails;
         if (tails <= 0) return;
 
-        if (RANDOM.nextInt(FoxData.MAX_TAILS) >= tails) return;
+        if (RANDOM.nextInt(KitsuneData.MAX_TAILS) >= tails) return;
 
         int count = tails;
-        if (tails >= FoxData.MAX_TAILS) {
+        if (tails >= KitsuneData.MAX_TAILS) {
             count += KYUUBI_BONUS_PARTICLES;
         }
 
-        DustParticleEffect dust = particleFor(data.element());
+        DustParticleEffect dust = particleFor(data.element);
         Vec3d pos = fox.getPos().add(0, fox.getHeight() * 0.6, 0);
         double spread = 0.2 + (tails * 0.04);
 
         world.spawnParticles(
-                dust,
-                pos.x, pos.y, pos.z,
-                count,
-                spread, spread * 0.5, spread,
-                0.0
+            dust,
+            pos.x, pos.y, pos.z,
+            count,
+            spread, spread * 0.5, spread,
+            0.0
         );
     }
 

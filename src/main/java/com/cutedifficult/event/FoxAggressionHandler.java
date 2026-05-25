@@ -1,7 +1,8 @@
 package com.cutedifficult.event;
 
 import com.cutedifficult.CuteDifficult;
-import com.cutedifficult.spirit.FoxData;
+import com.cutedifficult.spirit.KitsuneData;
+import com.cutedifficult.spirit.FoxStorage;
 import com.cutedifficult.spirit.FoxStats;
 import com.cutedifficult.util.DifficultyMode;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -75,13 +76,11 @@ public final class FoxAggressionHandler {
     }
 
     private static void tickFox(ServerWorld world, FoxEntity fox) {
-        FoxData data = FoxData.getOrCreate(fox, RANDOM);
-        if (data.tails() < AGGRESSION_MIN_TAILS) return;
+        KitsuneData data = FoxStorage.getOrCreate(fox, RANDOM);
+        if (data.tails < AGGRESSION_MIN_TAILS) return;
 
-        // Random roll first — most of the time this is the only check.
         if (RANDOM.nextDouble() >= CAST_CHANCE_PER_TICK) return;
 
-        // Find a valid target.
         ServerPlayerEntity target = (ServerPlayerEntity) world.getClosestPlayer(
             fox.getX(), fox.getY(), fox.getZ(),
             AGGRESSION_RADIUS,
@@ -90,14 +89,15 @@ public final class FoxAggressionHandler {
         );
         if (target == null) return;
 
-        // Cooldown check.
+        // Centralized hostility + LOS check.
+        if (!com.cutedifficult.spirit.FoxHostility.canAttackWithLineOfSight(fox, target)) return;
+
         UUID id = fox.getUuid();
         long now = world.getTime();
         Long lastCast = LAST_CAST.get(id);
-        int cooldown = FoxStats.abilityCooldownTicks(data.tails());
+        int cooldown = FoxStats.abilityCooldownTicks(data.tails);
         if (lastCast != null && now - lastCast < cooldown) return;
 
-        // Cast! We invoke the ability through the public helper.
         FoxAbilityHandler.castElementalAbility(world, fox, data, target);
         LAST_CAST.put(id, now);
     }

@@ -1,7 +1,8 @@
 package com.cutedifficult.entity.ai;
 
 import com.cutedifficult.entity.KitsuneEntity;
-import com.cutedifficult.spirit.FoxData;
+import com.cutedifficult.spirit.KitsuneData;
+import com.cutedifficult.spirit.FoxStorage;
 import com.cutedifficult.spirit.FoxStats;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -81,8 +82,8 @@ public class KitsuneMeleeGoal extends Goal {
 
     @Override
     public boolean canStart() {
-        FoxData data = FoxData.getOrCreate(this.kitsune, this.random);
-        if (data.tails() < MIN_TAILS) return false;
+        KitsuneData data = FoxStorage.getOrCreate(this.kitsune, this.random);
+        if (data.tails < MIN_TAILS) return false;
 
         long now = this.kitsune.getWorld().getTime();
         if (now - this.lastDashEndedAt < DASH_COOLDOWN_TICKS) return false;
@@ -99,7 +100,7 @@ public class KitsuneMeleeGoal extends Goal {
         if (com.cutedifficult.event.ResonanceBlessingHandler.hasGreatBlessing(sp)) return false;
 
         // Witnessed killings override trust. Otherwise trust gates attack.
-        if (data.witnessedKills() == 0 && data.trustLevel() >= FRIENDLY_TRUST_THRESHOLD) return false;
+        if (data.witnessedKills == 0 && data.trustLevel >= FRIENDLY_TRUST_THRESHOLD) return false;
 
         double distance = this.kitsune.distanceTo(sp);
         if (distance < DASH_MIN_RADIUS) return false;
@@ -115,8 +116,8 @@ public class KitsuneMeleeGoal extends Goal {
         // Great Blessing peace.
         if (com.cutedifficult.event.ResonanceBlessingHandler.hasGreatBlessing(this.target)) return false;
         // Trust gate with witness override.
-        FoxData data = FoxData.getOrCreate(this.kitsune, this.random);
-        if (data.witnessedKills() == 0 && data.trustLevel() >= FRIENDLY_TRUST_THRESHOLD) return false;
+        KitsuneData data = FoxStorage.getOrCreate(this.kitsune, this.random);
+        if (data.witnessedKills == 0 && data.trustLevel >= FRIENDLY_TRUST_THRESHOLD) return false;
         return this.phase != Phase.IDLE;
     }
 
@@ -214,8 +215,8 @@ public class KitsuneMeleeGoal extends Goal {
     }
 
     private void doImpact() {
-        FoxData data = FoxData.getOrCreate(this.kitsune, this.random);
-        double power = data.tails() / 9.0;
+        KitsuneData data = FoxStorage.getOrCreate(this.kitsune, this.random);
+        double power = data.tails / 9.0;
 
         // Damage — generic, scaled by tails.
         this.target.damage(

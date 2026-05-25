@@ -100,16 +100,25 @@ public final class PlayerTickHandler {
      * the sidebar slot. The sidebar will then update live as the score
      * changes for that element.
      */
+    /**
+     * v0.9: sidebar disabled in favor of client-side {@code SpiritOverlayHud}.
+     * Each player now sees their own stats via HUD overlay rather than a
+     * shared global scoreboard. This method is kept as a no-op so the
+     * call site doesn't need to change, and it actively unbinds any sidebar
+     * objective leftover from older mod versions or other mods.
+     */
     private static void updateSidebar(MinecraftServer server, ServerPlayerEntity referencePlayer) {
-        Element dominant = SpiritData.dominantElement(server, referencePlayer);
         Scoreboard scoreboard = server.getScoreboard();
-        ScoreboardObjective obj = scoreboard.getNullableObjective(SpiritData.objectiveFor(dominant));
-        if (obj == null) return;
-        // Only re-bind if the currently bound objective is different — avoids
-        // unnecessary scoreboard packet spam.
         ScoreboardObjective currentlyBound = scoreboard.getObjectiveForSlot(ScoreboardDisplaySlot.SIDEBAR);
-        if (currentlyBound != obj) {
-            scoreboard.setObjectiveSlot(ScoreboardDisplaySlot.SIDEBAR, obj);
+        if (currentlyBound != null) {
+            // Check if this is one of OUR objectives — if yes, unbind.
+            for (Element e : Element.values()) {
+                ScoreboardObjective ours = scoreboard.getNullableObjective(SpiritData.objectiveFor(e));
+                if (currentlyBound == ours) {
+                    scoreboard.setObjectiveSlot(ScoreboardDisplaySlot.SIDEBAR, null);
+                    break;
+                }
+            }
         }
     }
 

@@ -4,7 +4,8 @@ import com.cutedifficult.CuteDifficult;
 import com.cutedifficult.spirit.Blessings;
 import com.cutedifficult.spirit.Curses;
 import com.cutedifficult.spirit.Element;
-import com.cutedifficult.spirit.FoxData;
+import com.cutedifficult.spirit.KitsuneData;
+import com.cutedifficult.spirit.FoxStorage;
 import com.cutedifficult.spirit.FoxPersonality;
 import com.cutedifficult.spirit.SpiritData;
 import com.cutedifficult.util.DifficultyMode;
@@ -78,18 +79,18 @@ public final class FoxOfferingHandler {
     private static ActionResult handleOffering(
         ServerPlayerEntity player, ServerWorld world, FoxEntity fox, ItemStack stack
     ) {
-        FoxData data = FoxData.getOrCreate(fox, RANDOM);
+        KitsuneData data = FoxStorage.getOrCreate(fox, RANDOM);
         long now = world.getTime();
 
-        if (now - data.lastFedTickStamp() < FOX_COOLDOWN_TICKS) {
+        if (now - data.lastFedTickStamp < FOX_COOLDOWN_TICKS) {
             return ActionResult.FAIL;
         }
 
         MinecraftServer server = player.getServer();
         if (server == null) return ActionResult.PASS;
 
-        Element element = data.element();
-        FoxPersonality personality = data.personality();
+        Element element = data.element;
+        FoxPersonality personality = data.personality;
 
         if (stack.getItem() == element.correctOffering()) {
             return handleCorrect(player, world, fox, data, element, personality, stack, server, now);
@@ -101,32 +102,32 @@ public final class FoxOfferingHandler {
     }
 
     private static ActionResult handleCorrect(
-        ServerPlayerEntity player, ServerWorld world, FoxEntity fox, FoxData data,
+        ServerPlayerEntity player, ServerWorld world, FoxEntity fox, KitsuneData data,
         Element element, FoxPersonality personality, ItemStack stack,
         MinecraftServer server, long now
     ) {
-        boolean satisfied = (now - data.lastFedTickStamp() < 24000)
-            && (data.trustLevel() > 50)
+        boolean satisfied = (now - data.lastFedTickStamp < 24000)
+            && (data.trustLevel > 50)
             && (personality.greed() > 60);
 
         if (satisfied) {
             sendMurmur(player, "The fox sniffs the offering, takes it, but does not look at you.", element);
             stack.decrement(1);
-            FoxData.store(fox, data.withLastFed(now));
+            FoxStorage.store(fox, data.withLastFed(now));
             return ActionResult.SUCCESS;
         }
 
-        double trustFactor = 0.5 + (data.trustLevel() / 100.0);
+        double trustFactor = 0.5 + (data.trustLevel / 100.0);
         double greedFactor = 1.0 - (personality.greed() / 200.0);
         int spiritGain = Math.max(1, (int) Math.round(BASE_SPIRIT_REWARD * trustFactor * greedFactor));
 
         SpiritData.add(server, player, element, spiritGain);
 
         int trustGain = Math.max(1, (int) Math.round(MAX_TRUST_GAIN * (1.0 - personality.trauma() / 200.0)));
-        int oldTrust = data.trustLevel();
+        int oldTrust = data.trustLevel;
         int newTrust = oldTrust + trustGain;
-        FoxData updated = data.withTrust(newTrust).withLastFed(now);
-        FoxData.store(fox, updated);
+        KitsuneData updated = data.withTrust(newTrust).withLastFed(now);
+        FoxStorage.store(fox, updated);
 
         stack.decrement(1);
 
@@ -146,9 +147,9 @@ public final class FoxOfferingHandler {
 
         // Blessing milestone: cross a multiple of BLESSING_TRUST_INTERVAL.
         int oldMilestone = oldTrust / BLESSING_TRUST_INTERVAL;
-        int newMilestone = updated.trustLevel() / BLESSING_TRUST_INTERVAL;
+        int newMilestone = updated.trustLevel / BLESSING_TRUST_INTERVAL;
         if (newMilestone > oldMilestone) {
-            Blessings.grant(player, element, data.tails());
+            Blessings.grant(player, element, data.tails);
             sendMurmur(player,
                 "A warmth settles over you. The kitsune of " + element.kamiName() + " favors you.",
                 element
@@ -165,21 +166,21 @@ public final class FoxOfferingHandler {
     }
 
     private static ActionResult handleOffense(
-        ServerPlayerEntity player, ServerWorld world, FoxEntity fox, FoxData data,
+        ServerPlayerEntity player, ServerWorld world, FoxEntity fox, KitsuneData data,
         Element element, FoxPersonality personality,
         MinecraftServer server, long now
     ) {
         boolean offended = RANDOM.nextInt(100) < personality.pride();
         if (!offended) {
             sendMurmur(player, "The fox sniffs the offering, then walks away.", element);
-            FoxData.store(fox, data.withLastFed(now));
+            FoxStorage.store(fox, data.withLastFed(now));
             return ActionResult.PASS;
         }
 
         SpiritData.add(server, player, element, -SPIRIT_PENALTY_OFFENSE);
         SpiritData.addKarma(server, player, KARMA_PER_OFFENSE);
-        FoxData updated = data.withTrust(data.trustLevel() - 10).withLastFed(now);
-        FoxData.store(fox, updated);
+        KitsuneData updated = data.withTrust(data.trustLevel - 10).withLastFed(now);
+        FoxStorage.store(fox, updated);
 
         world.spawnParticles(
             ParticleTypes.ANGRY_VILLAGER,
@@ -197,8 +198,8 @@ public final class FoxOfferingHandler {
 
         // Curse trigger: only proud, distrustful foxes curse the player.
         if (personality.pride() >= CURSE_PRIDE_THRESHOLD
-            && updated.trustLevel() <= CURSE_TRUST_CEILING) {
-            Curses.inflict(player, element, data.tails());
+            && updated.trustLevel <= CURSE_TRUST_CEILING) {
+            Curses.inflict(player, element, data.tails);
             sendMurmur(player,
                 "You feel something cold settle into your bones. The kitsune has cursed you.",
                 element

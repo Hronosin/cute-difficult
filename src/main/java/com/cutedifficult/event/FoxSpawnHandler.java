@@ -4,7 +4,8 @@ import com.cutedifficult.CuteDifficult;
 import com.cutedifficult.entity.KitsuneEntity;
 import com.cutedifficult.entity.ModEntities;
 import com.cutedifficult.spirit.Element;
-import com.cutedifficult.spirit.FoxData;
+import com.cutedifficult.spirit.KitsuneData;
+import com.cutedifficult.spirit.FoxStorage;
 import com.cutedifficult.spirit.FoxPersonality;
 import com.cutedifficult.spirit.FoxStats;
 import com.cutedifficult.util.DifficultyMode;
@@ -49,13 +50,11 @@ public final class FoxSpawnHandler {
             if (CuteDifficult.currentMode != DifficultyMode.CRUEL) return;
             if (!(entity instanceof FoxEntity fox)) return;
 
-            // Already our kitsune — just sync HP if needed.
+            // Already our kitsune — just sync HP if needed using cache data.
             if (fox instanceof KitsuneEntity) {
-                NbtCompound nbt = new NbtCompound();
-                fox.writeNbt(nbt);
-                if (nbt.contains(FoxData.NBT_KEY)) {
-                    FoxData data = FoxData.fromNbt(nbt.getCompound(FoxData.NBT_KEY));
-                    FoxStats.applyHpForTails(fox, data.tails());
+                KitsuneData cached = FoxStorage.peekCache(fox);
+                if (cached != null) {
+                    FoxStats.applyHpForTails(fox, cached.tails);
                 }
                 return;
             }
@@ -90,8 +89,8 @@ public final class FoxSpawnHandler {
         Element element = selectElement(world, pos);
         int tails = rollTails();
         FoxPersonality personality = FoxPersonality.random(RANDOM);
-        FoxData data = new FoxData(element, personality, tails, 0, 0L, 0);
-        FoxData.store(kitsune, data);
+        KitsuneData data = KitsuneData.of6(element, personality, tails, 0, 0L, 0);
+        FoxStorage.store(kitsune, data);
         FoxStats.applyHpForTails(kitsune, tails);
 
         world.spawnEntity(kitsune);

@@ -3,11 +3,11 @@
     "id": "cutedifficult",
     "version": "${version}",
     "name": "Cute Difficult",
-    "description": "Cruel Universe Tortures Everyone. A spiritual journey through suffering.",
-    "authors": ["your_name_here"],
+    "description": "Cruel Universe Tortures Everyone. Brutal Shinto-inspired difficulty mod with 9 elemental kitsune spirits, blessings, witnesses, and a path to Inari's grace through suffering.",
+    "authors": ["Mr_Hronosin"],
     "contact": {
-        "homepage": "https://example.com",
-        "sources": "https://github.com/yourname/cute-difficult"
+        "homepage": "https://modrinth.com/mod/cute-difficult",
+        "sources": "https://github.com/Hronosin/cute-difficult.git"
     },
     "license": "MIT",
     "icon": "assets/cutedifficult/icon.png",

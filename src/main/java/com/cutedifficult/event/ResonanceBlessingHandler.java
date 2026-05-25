@@ -69,7 +69,10 @@ public final class ResonanceBlessingHandler {
             if (tickCounter % REFRESH_INTERVAL != 0) return;
 
             for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-                if (player.isCreative() || player.isSpectator()) continue;
+                // v0.9.6: removed isCreative() skip — creative players should
+                // still see blessings (essential for testing the system at all).
+                // Spectator stays skipped — they're invisible observers.
+                if (player.isSpectator()) continue;
                 refreshPlayer(server, player);
             }
         });
@@ -79,11 +82,20 @@ public final class ResonanceBlessingHandler {
 
     private static void refreshPlayer(MinecraftServer server, ServerPlayerEntity player) {
         EnumSet<Element> active = EnumSet.noneOf(Element.class);
+        StringBuilder debugSpirits = new StringBuilder();
         for (Element element : Element.values()) {
-            if (SpiritData.get(server, player, element) >= BLESSING_THRESHOLD) {
+            int value = SpiritData.get(server, player, element);
+            debugSpirits.append(element.name()).append("=").append(value).append(" ");
+            if (value >= BLESSING_THRESHOLD) {
                 active.add(element);
             }
         }
+
+        // Debug log once per refresh cycle.
+        CuteDifficult.LOGGER.info(
+            "[CuteDifficult] Blessing refresh for {}: {} | active={} | threshold={}",
+            player.getName().getString(), debugSpirits.toString().trim(),
+            active, BLESSING_THRESHOLD);
 
         EnumSet<Element> previous = LAST_ACTIVE.computeIfAbsent(player.getUuid(), k -> EnumSet.noneOf(Element.class));
 
@@ -189,7 +201,10 @@ public final class ResonanceBlessingHandler {
     }
 
     private static void apply(ServerPlayerEntity player, RegistryEntry<StatusEffect> effect, int amp) {
-        player.addStatusEffect(new StatusEffectInstance(
+        boolean result = player.addStatusEffect(new StatusEffectInstance(
             effect, EFFECT_DURATION, amp, false, false, true));
+        CuteDifficult.LOGGER.info(
+            "[CuteDifficult] Applied effect to {}: result={}",
+            player.getName().getString(), result);
     }
 }

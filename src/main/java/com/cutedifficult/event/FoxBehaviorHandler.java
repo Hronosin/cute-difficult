@@ -1,7 +1,8 @@
 package com.cutedifficult.event;
 
 import com.cutedifficult.CuteDifficult;
-import com.cutedifficult.spirit.FoxData;
+import com.cutedifficult.spirit.KitsuneData;
+import com.cutedifficult.spirit.FoxStorage;
 import com.cutedifficult.util.DifficultyMode;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.entity.passive.FoxEntity;
@@ -45,8 +46,8 @@ public final class FoxBehaviorHandler {
     }
 
     private static void maybeSit(ServerWorld world, FoxEntity fox) {
-        FoxData data = FoxData.getOrCreate(fox, RANDOM);
-        if (data.tails() < FoxData.MAX_TAILS) {
+        KitsuneData data = FoxStorage.getOrCreate(fox, RANDOM);
+        if (data.tails < KitsuneData.MAX_TAILS) {
             // Only Kyuubi sits. If a fox just dropped from 9 to <9 (shouldn't
             // happen but defensive), let vanilla handle posture again.
             return;

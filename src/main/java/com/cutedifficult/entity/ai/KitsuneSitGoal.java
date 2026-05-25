@@ -1,7 +1,8 @@
 package com.cutedifficult.entity.ai;
 
 import com.cutedifficult.entity.KitsuneEntity;
-import com.cutedifficult.spirit.FoxData;
+import com.cutedifficult.spirit.KitsuneData;
+import com.cutedifficult.spirit.FoxStorage;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -29,8 +30,8 @@ public class KitsuneSitGoal extends Goal {
 
     @Override
     public boolean canStart() {
-        FoxData data = FoxData.getOrCreate(this.kitsune, this.random);
-        if (data.tails() < FoxData.MAX_TAILS) return false;
+        KitsuneData data = FoxStorage.getOrCreate(this.kitsune, this.random);
+        if (data.tails < KitsuneData.MAX_TAILS) return false;
         PlayerEntity player = this.kitsune.getWorld().getClosestPlayer(this.kitsune, SIT_RADIUS);
         return player != null && !player.isSpectator();
     }

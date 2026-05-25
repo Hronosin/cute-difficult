@@ -1,6 +1,8 @@
 package com.cutedifficult.util;
 
 import com.cutedifficult.CuteDifficult;
+import com.cutedifficult.spirit.Element;
+import com.cutedifficult.spirit.SpiritData;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardCriterion;
 import net.minecraft.scoreboard.ScoreboardDisplaySlot;
@@ -79,9 +81,31 @@ public final class SpiritScoreboard {
             CuteDifficult.LOGGER.info("[CuteDifficult] Registered Karma scoreboard objective.");
         }
 
-        // Bind Spirit to the sidebar so players can see it on the right of the screen.
-        // Idempotent: setting the same objective again is a no-op.
-        scoreboard.setObjectiveSlot(ScoreboardDisplaySlot.SIDEBAR, spirit);
+        // v0.9.5: create per-element Spirit objectives. SpiritData.get/set use
+        // `objectiveFor(element)` which yields e.g. "cd_spirit_kasai" — these
+        // need to exist as actual scoreboard objectives, otherwise get returns
+        // 0 and set is a silent no-op. Before this fix, all spirit commands
+        // were broken (the value never persisted).
+        for (Element element : Element.values()) {
+            String objId = SpiritData.objectiveFor(element);
+            if (scoreboard.getNullableObjective(objId) == null) {
+                scoreboard.addObjective(
+                    objId,
+                    ScoreboardCriterion.DUMMY,
+                    Text.literal(element.kamiName()).formatted(element.color()),
+                    ScoreboardCriterion.RenderType.INTEGER,
+                    true,
+                    null
+                );
+                CuteDifficult.LOGGER.info("[CuteDifficult] Registered Spirit objective for {}", element.name());
+            }
+        }
+
+        // v0.9: sidebar binding removed. Spirit display now uses the
+        // client-side SpiritOverlayHud via custom packets so each player
+        // sees their own stats. The scoreboard objective still exists for
+        // data storage; we just don't bind it to SIDEBAR anymore.
+        // scoreboard.setObjectiveSlot(ScoreboardDisplaySlot.SIDEBAR, spirit);
     }
 
     /**

@@ -1,7 +1,8 @@
 package com.cutedifficult.entity.ai;
 
 import com.cutedifficult.entity.KitsuneEntity;
-import com.cutedifficult.spirit.FoxData;
+import com.cutedifficult.spirit.KitsuneData;
+import com.cutedifficult.spirit.FoxStorage;
 import net.minecraft.entity.ai.NoPenaltyTargeting;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
@@ -43,8 +44,8 @@ public class KitsuneFleeGoal extends Goal {
 
     @Override
     public boolean canStart() {
-        FoxData data = FoxData.getOrCreate(this.kitsune, this.random);
-        if (data.tails() > MAX_TAILS_THAT_FLEE) return false;
+        KitsuneData data = FoxStorage.getOrCreate(this.kitsune, this.random);
+        if (data.tails > MAX_TAILS_THAT_FLEE) return false;
 
         PlayerEntity nearestPlayer = this.kitsune.getWorld().getClosestPlayer(
             this.kitsune, FLEE_TRIGGER_RADIUS

@@ -2,7 +2,8 @@ package com.cutedifficult.command;
 
 import com.cutedifficult.CuteDifficult;
 import com.cutedifficult.spirit.Element;
-import com.cutedifficult.spirit.FoxData;
+import com.cutedifficult.spirit.KitsuneData;
+import com.cutedifficult.spirit.FoxStorage;
 import com.cutedifficult.spirit.FoxPersonality;
 import com.cutedifficult.spirit.SpiritData;
 import com.cutedifficult.util.DifficultyMode;
@@ -78,88 +79,88 @@ public final class CdCommand {
     public static void register() {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             dispatcher.register(CommandManager.literal("cd")
-                .then(CommandManager.literal("info").executes(CdCommand::showPlayerInfo))
+                    .then(CommandManager.literal("info").executes(CdCommand::showPlayerInfo))
 
-                // /cd spirit <element> [show | set <n> | add <n>]
-                .then(CommandManager.literal("spirit")
-                    .then(CommandManager.argument("element", StringArgumentType.word())
-                        .suggests(ELEMENT_SUGGESTIONS)
-                        .executes(ctx -> {
-                            Element el = resolveElement(ctx.getSource(), StringArgumentType.getString(ctx, "element"));
-                            return el == null ? 0 : showElement(ctx.getSource(), el);
-                        })
-                        .then(CommandManager.literal("set").requires(op())
-                            .then(CommandManager.argument("value", IntegerArgumentType.integer(-100, 100))
-                                .executes(ctx -> {
-                                    Element el = resolveElement(ctx.getSource(), StringArgumentType.getString(ctx, "element"));
-                                    return el == null ? 0 : setElement(ctx.getSource(), el,
-                                        IntegerArgumentType.getInteger(ctx, "value"));
-                                })))
-                        .then(CommandManager.literal("add").requires(op())
-                            .then(CommandManager.argument("delta", IntegerArgumentType.integer(-200, 200))
-                                .executes(ctx -> {
-                                    Element el = resolveElement(ctx.getSource(), StringArgumentType.getString(ctx, "element"));
-                                    return el == null ? 0 : addElement(ctx.getSource(), el,
-                                        IntegerArgumentType.getInteger(ctx, "delta"));
-                                })))))
+                    // /cd spirit <element> [show | set <n> | add <n>]
+                    .then(CommandManager.literal("spirit")
+                            .then(CommandManager.argument("element", StringArgumentType.word())
+                                    .suggests(ELEMENT_SUGGESTIONS)
+                                    .executes(ctx -> {
+                                        Element el = resolveElement(ctx.getSource(), StringArgumentType.getString(ctx, "element"));
+                                        return el == null ? 0 : showElement(ctx.getSource(), el);
+                                    })
+                                    .then(CommandManager.literal("set").requires(op())
+                                            .then(CommandManager.argument("value", IntegerArgumentType.integer(-100, 100))
+                                                    .executes(ctx -> {
+                                                        Element el = resolveElement(ctx.getSource(), StringArgumentType.getString(ctx, "element"));
+                                                        return el == null ? 0 : setElement(ctx.getSource(), el,
+                                                                IntegerArgumentType.getInteger(ctx, "value"));
+                                                    })))
+                                    .then(CommandManager.literal("add").requires(op())
+                                            .then(CommandManager.argument("delta", IntegerArgumentType.integer(-200, 200))
+                                                    .executes(ctx -> {
+                                                        Element el = resolveElement(ctx.getSource(), StringArgumentType.getString(ctx, "element"));
+                                                        return el == null ? 0 : addElement(ctx.getSource(), el,
+                                                                IntegerArgumentType.getInteger(ctx, "delta"));
+                                                    })))))
 
-                // /cd karma [show | set <n> | add <n>]
-                .then(CommandManager.literal("karma")
-                    .executes(ctx -> showKarma(ctx.getSource()))
-                    .then(CommandManager.literal("set").requires(op())
-                        .then(CommandManager.argument("value", IntegerArgumentType.integer())
-                            .executes(ctx -> setKarma(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "value")))))
-                    .then(CommandManager.literal("add").requires(op())
-                        .then(CommandManager.argument("delta", IntegerArgumentType.integer())
-                            .executes(ctx -> addKarma(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "delta"))))))
+                    // /cd karma [show | set <n> | add <n>]
+                    .then(CommandManager.literal("karma")
+                            .executes(ctx -> showKarma(ctx.getSource()))
+                            .then(CommandManager.literal("set").requires(op())
+                                    .then(CommandManager.argument("value", IntegerArgumentType.integer())
+                                            .executes(ctx -> setKarma(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "value")))))
+                            .then(CommandManager.literal("add").requires(op())
+                                    .then(CommandManager.argument("delta", IntegerArgumentType.integer())
+                                            .executes(ctx -> addKarma(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "delta"))))))
 
-                // /cd reset
-                .then(CommandManager.literal("reset").requires(op())
-                    .executes(CdCommand::resetPlayer))
+                    // /cd reset
+                    .then(CommandManager.literal("reset").requires(op())
+                            .executes(CdCommand::resetPlayer))
 
-                // /cd godmode
-                .then(CommandManager.literal("godmode").requires(op())
-                    .executes(CdCommand::godmodePlayer))
+                    // /cd godmode
+                    .then(CommandManager.literal("godmode").requires(op())
+                            .executes(CdCommand::godmodePlayer))
 
-                // /cd hollow
-                .then(CommandManager.literal("hollow").requires(op())
-                    .executes(CdCommand::hollowPlayer))
+                    // /cd hollow
+                    .then(CommandManager.literal("hollow").requires(op())
+                            .executes(CdCommand::hollowPlayer))
 
-                // /cd mode <cruel|peace>
-                .then(CommandManager.literal("mode").requires(op())
-                    .then(CommandManager.argument("name", StringArgumentType.word())
-                        .suggests(MODE_SUGGESTIONS)
-                        .executes(ctx -> setMode(ctx.getSource(), StringArgumentType.getString(ctx, "name")))))
+                    // /cd mode <cruel|peace>
+                    .then(CommandManager.literal("mode").requires(op())
+                            .then(CommandManager.argument("name", StringArgumentType.word())
+                                    .suggests(MODE_SUGGESTIONS)
+                                    .executes(ctx -> setMode(ctx.getSource(), StringArgumentType.getString(ctx, "name")))))
 
-                // /cd fox <info | tails N | element X | trust N | personality T N | reroll | summon X N>
-                .then(CommandManager.literal("fox")
-                    .then(CommandManager.literal("info").executes(CdCommand::foxInfo))
-                    .then(CommandManager.literal("tails").requires(op())
-                        .then(CommandManager.argument("count", IntegerArgumentType.integer(1, FoxData.MAX_TAILS))
-                            .executes(ctx -> foxSetTails(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "count")))))
-                    .then(CommandManager.literal("element").requires(op())
-                        .then(CommandManager.argument("name", StringArgumentType.word())
-                            .suggests(ELEMENT_SUGGESTIONS)
-                            .executes(ctx -> foxSetElement(ctx.getSource(), StringArgumentType.getString(ctx, "name")))))
-                    .then(CommandManager.literal("trust").requires(op())
-                        .then(CommandManager.argument("value", IntegerArgumentType.integer(0, 100))
-                            .executes(ctx -> foxSetTrust(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "value")))))
-                    .then(CommandManager.literal("personality").requires(op())
-                        .then(CommandManager.argument("trait", StringArgumentType.word())
-                            .suggests(PERSONALITY_TRAIT_SUGGESTIONS)
-                            .then(CommandManager.argument("value", IntegerArgumentType.integer(0, 100))
-                                .executes(ctx -> foxSetPersonality(ctx.getSource(),
-                                    StringArgumentType.getString(ctx, "trait"),
-                                    IntegerArgumentType.getInteger(ctx, "value"))))))
-                    .then(CommandManager.literal("reroll").requires(op())
-                        .executes(CdCommand::foxReroll))
-                    .then(CommandManager.literal("summon").requires(op())
-                        .then(CommandManager.argument("element", StringArgumentType.word())
-                            .suggests(ELEMENT_SUGGESTIONS)
-                            .then(CommandManager.argument("tails", IntegerArgumentType.integer(1, FoxData.MAX_TAILS))
-                                .executes(ctx -> foxSummon(ctx.getSource(),
-                                    StringArgumentType.getString(ctx, "element"),
-                                    IntegerArgumentType.getInteger(ctx, "tails")))))))
+                    // /cd fox <info | tails N | element X | trust N | personality T N | reroll | summon X N>
+                    .then(CommandManager.literal("fox")
+                            .then(CommandManager.literal("info").executes(CdCommand::foxInfo))
+                            .then(CommandManager.literal("tails").requires(op())
+                                    .then(CommandManager.argument("count", IntegerArgumentType.integer(1, KitsuneData.MAX_TAILS))
+                                            .executes(ctx -> foxSetTails(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "count")))))
+                            .then(CommandManager.literal("element").requires(op())
+                                    .then(CommandManager.argument("name", StringArgumentType.word())
+                                            .suggests(ELEMENT_SUGGESTIONS)
+                                            .executes(ctx -> foxSetElement(ctx.getSource(), StringArgumentType.getString(ctx, "name")))))
+                            .then(CommandManager.literal("trust").requires(op())
+                                    .then(CommandManager.argument("value", IntegerArgumentType.integer(0, 100))
+                                            .executes(ctx -> foxSetTrust(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "value")))))
+                            .then(CommandManager.literal("personality").requires(op())
+                                    .then(CommandManager.argument("trait", StringArgumentType.word())
+                                            .suggests(PERSONALITY_TRAIT_SUGGESTIONS)
+                                            .then(CommandManager.argument("value", IntegerArgumentType.integer(0, 100))
+                                                    .executes(ctx -> foxSetPersonality(ctx.getSource(),
+                                                            StringArgumentType.getString(ctx, "trait"),
+                                                            IntegerArgumentType.getInteger(ctx, "value"))))))
+                            .then(CommandManager.literal("reroll").requires(op())
+                                    .executes(CdCommand::foxReroll))
+                            .then(CommandManager.literal("summon").requires(op())
+                                    .then(CommandManager.argument("element", StringArgumentType.word())
+                                            .suggests(ELEMENT_SUGGESTIONS)
+                                            .then(CommandManager.argument("tails", IntegerArgumentType.integer(1, KitsuneData.MAX_TAILS))
+                                                    .executes(ctx -> foxSummon(ctx.getSource(),
+                                                            StringArgumentType.getString(ctx, "element"),
+                                                            IntegerArgumentType.getInteger(ctx, "tails")))))))
             );
         });
     }
@@ -175,7 +176,7 @@ public final class CdCommand {
             if (e.shortName().equalsIgnoreCase(name) || e.name().equalsIgnoreCase(name)) return e;
         }
         src.sendError(Text.literal("Unknown element: " + name
-            + ". Valid: fire, water, earth, wind, thunder, forest, ice, spirit, sky"));
+                + ". Valid: fire, water, earth, wind, thunder, forest, ice, spirit, sky"));
         return null;
     }
 
@@ -219,7 +220,7 @@ public final class CdCommand {
         for (Element e : Element.values()) {
             int v = SpiritData.get(server, player, e);
             src.sendFeedback(() -> Text.literal("  " + e.kamiName() + ": ").formatted(e.color())
-                .append(Text.literal(String.valueOf(v)).formatted(Formatting.WHITE)), false);
+                    .append(Text.literal(String.valueOf(v)).formatted(Formatting.WHITE)), false);
         }
         int total = SpiritData.totalSpirit(server, player);
         int reson = SpiritData.resonance(server, player);
@@ -227,15 +228,15 @@ public final class CdCommand {
         int karma = SpiritData.getKarma(server, player);
 
         src.sendFeedback(() -> Text.literal("Total: ").formatted(Formatting.GRAY)
-            .append(Text.literal(total + " (" + tierFor(total) + ")").formatted(Formatting.WHITE)), false);
+                .append(Text.literal(total + " (" + tierFor(total) + ")").formatted(Formatting.WHITE)), false);
         src.sendFeedback(() -> Text.literal("Resonance: ").formatted(Formatting.GRAY)
-            .append(Text.literal(reson + " / 9").formatted(Formatting.WHITE)), false);
+                .append(Text.literal(reson + " / 9").formatted(Formatting.WHITE)), false);
         src.sendFeedback(() -> Text.literal("Purity: ").formatted(Formatting.GRAY)
-            .append(Text.literal(String.format("%.1f%%", pur * 100)).formatted(Formatting.WHITE)), false);
+                .append(Text.literal(String.format("%.1f%%", pur * 100)).formatted(Formatting.WHITE)), false);
         src.sendFeedback(() -> Text.literal("Karma: ").formatted(Formatting.RED)
-            .append(Text.literal(String.valueOf(karma)).formatted(Formatting.WHITE)), false);
+                .append(Text.literal(String.valueOf(karma)).formatted(Formatting.WHITE)), false);
         src.sendFeedback(() -> Text.literal("Mode: ").formatted(Formatting.GRAY)
-            .append(Text.literal(CuteDifficult.currentMode.name()).formatted(Formatting.WHITE)), false);
+                .append(Text.literal(CuteDifficult.currentMode.name()).formatted(Formatting.WHITE)), false);
         return 1;
     }
 
@@ -261,7 +262,7 @@ public final class CdCommand {
         SpiritData.add(src.getServer(), player, element, delta);
         int now = SpiritData.get(src.getServer(), player, element);
         src.sendFeedback(() -> Text.literal(element.kamiName() + " "
-            + (delta >= 0 ? "+" : "") + delta + " → " + now).formatted(element.color()), true);
+                + (delta >= 0 ? "+" : "") + delta + " → " + now).formatted(element.color()), true);
         return 1;
     }
 
@@ -290,7 +291,7 @@ public final class CdCommand {
         SpiritData.addKarma(src.getServer(), player, delta);
         int now = SpiritData.getKarma(src.getServer(), player);
         src.sendFeedback(() -> Text.literal("Karma "
-            + (delta >= 0 ? "+" : "") + delta + " → " + now).formatted(Formatting.RED), true);
+                + (delta >= 0 ? "+" : "") + delta + " → " + now).formatted(Formatting.RED), true);
         return 1;
     }
 
@@ -351,31 +352,31 @@ public final class CdCommand {
         FoxEntity fox = findNearestFox(src);
         if (fox == null) return 0;
 
-        FoxData data = FoxData.getOrCreate(fox, RANDOM);
-        FoxPersonality p = data.personality();
+        KitsuneData data = FoxStorage.getOrCreate(fox, RANDOM);
+        FoxPersonality p = data.personality;
 
         src.sendFeedback(() -> Text.literal("=== Fox " + fox.getUuid().toString().substring(0, 8)
-            + " ===").formatted(Formatting.GOLD), false);
+                + " ===").formatted(Formatting.GOLD), false);
         src.sendFeedback(() -> Text.literal("Element: ").formatted(Formatting.GRAY)
-            .append(Text.literal(data.element().kamiName()).formatted(data.element().color())), false);
+                .append(Text.literal(data.element.kamiName()).formatted(data.element.color())), false);
         src.sendFeedback(() -> Text.literal("Tails: ").formatted(Formatting.GRAY)
-            .append(Text.literal(data.tails() + " / " + FoxData.MAX_TAILS).formatted(Formatting.WHITE)), false);
+                .append(Text.literal(data.tails + " / " + KitsuneData.MAX_TAILS).formatted(Formatting.WHITE)), false);
         src.sendFeedback(() -> Text.literal("Trust: ").formatted(Formatting.GRAY)
-            .append(Text.literal(data.trustLevel() + " / 100").formatted(Formatting.WHITE)), false);
+                .append(Text.literal(data.trustLevel + " / 100").formatted(Formatting.WHITE)), false);
         src.sendFeedback(() -> Text.literal("Personality:").formatted(Formatting.GRAY), false);
         src.sendFeedback(() -> Text.literal("  Pride: " + p.pride() + "  Trust: " + p.trust()
-            + "  Curiosity: " + p.curiosity()).formatted(Formatting.DARK_GRAY), false);
+                + "  Curiosity: " + p.curiosity()).formatted(Formatting.DARK_GRAY), false);
         src.sendFeedback(() -> Text.literal("  Memory: " + p.memory() + "  Greed: " + p.greed()
-            + "  Sensitivity: " + p.sensitivity() + "  Trauma: " + p.trauma()).formatted(Formatting.DARK_GRAY), false);
-        src.sendFeedback(() -> Text.literal("Last fed at tick: " + data.lastFedTickStamp()).formatted(Formatting.DARK_GRAY), false);
+                + "  Sensitivity: " + p.sensitivity() + "  Trauma: " + p.trauma()).formatted(Formatting.DARK_GRAY), false);
+        src.sendFeedback(() -> Text.literal("Last fed at tick: " + data.lastFedTickStamp).formatted(Formatting.DARK_GRAY), false);
         return 1;
     }
 
     private static int foxSetTails(ServerCommandSource src, int count) {
         FoxEntity fox = findNearestFox(src);
         if (fox == null) return 0;
-        FoxData data = FoxData.getOrCreate(fox, RANDOM);
-        FoxData.store(fox, data.withTails(count));
+        KitsuneData data = FoxStorage.getOrCreate(fox, RANDOM);
+        FoxStorage.store(fox, data.withTails(count));
         src.sendFeedback(() -> Text.literal("Fox tails = " + count).formatted(Formatting.GREEN), true);
         return 1;
     }
@@ -385,10 +386,10 @@ public final class CdCommand {
         if (el == null) return 0;
         FoxEntity fox = findNearestFox(src);
         if (fox == null) return 0;
-        FoxData data = FoxData.getOrCreate(fox, RANDOM);
-        FoxData updated = new FoxData(el, data.personality(), data.tails(),
-            data.trustLevel(), data.lastFedTickStamp(), 0);
-        FoxData.store(fox, updated);
+        KitsuneData data = FoxStorage.getOrCreate(fox, RANDOM);
+        KitsuneData updated = KitsuneData.of6(el, data.personality, data.tails,
+                data.trustLevel, data.lastFedTickStamp, 0);
+        FoxStorage.store(fox, updated);
         src.sendFeedback(() -> Text.literal("Fox element = " + el.kamiName()).formatted(el.color()), true);
         return 1;
     }
@@ -396,8 +397,8 @@ public final class CdCommand {
     private static int foxSetTrust(ServerCommandSource src, int value) {
         FoxEntity fox = findNearestFox(src);
         if (fox == null) return 0;
-        FoxData data = FoxData.getOrCreate(fox, RANDOM);
-        FoxData.store(fox, data.withTrust(value));
+        KitsuneData data = FoxStorage.getOrCreate(fox, RANDOM);
+        FoxStorage.store(fox, data.withTrust(value));
         src.sendFeedback(() -> Text.literal("Fox trust = " + value).formatted(Formatting.GREEN), true);
         return 1;
     }
@@ -405,8 +406,8 @@ public final class CdCommand {
     private static int foxSetPersonality(ServerCommandSource src, String trait, int value) {
         FoxEntity fox = findNearestFox(src);
         if (fox == null) return 0;
-        FoxData data = FoxData.getOrCreate(fox, RANDOM);
-        FoxPersonality p = data.personality();
+        KitsuneData data = FoxStorage.getOrCreate(fox, RANDOM);
+        FoxPersonality p = data.personality;
         FoxPersonality updated = switch (trait.toLowerCase()) {
             case "pride" -> new FoxPersonality(value, p.trust(), p.curiosity(), p.memory(), p.greed(), p.sensitivity(), p.trauma());
             case "trust" -> new FoxPersonality(p.pride(), value, p.curiosity(), p.memory(), p.greed(), p.sensitivity(), p.trauma());
@@ -417,14 +418,14 @@ public final class CdCommand {
             case "trauma" -> new FoxPersonality(p.pride(), p.trust(), p.curiosity(), p.memory(), p.greed(), p.sensitivity(), value);
             default -> {
                 src.sendError(Text.literal("Unknown trait: " + trait
-                    + ". Valid: pride, trust, curiosity, memory, greed, sensitivity, trauma"));
+                        + ". Valid: pride, trust, curiosity, memory, greed, sensitivity, trauma"));
                 yield null;
             }
         };
         if (updated == null) return 0;
-        FoxData stored = new FoxData(data.element(), updated, data.tails(),
-            data.trustLevel(), data.lastFedTickStamp(), 0);
-        FoxData.store(fox, stored);
+        KitsuneData stored = KitsuneData.of6(data.element, updated, data.tails,
+                data.trustLevel, data.lastFedTickStamp, 0);
+        FoxStorage.store(fox, stored);
         src.sendFeedback(() -> Text.literal("Fox " + trait + " = " + value).formatted(Formatting.GREEN), true);
         return 1;
     }
@@ -433,10 +434,10 @@ public final class CdCommand {
         ServerCommandSource src = ctx.getSource();
         FoxEntity fox = findNearestFox(src);
         if (fox == null) return 0;
-        FoxData fresh = FoxData.generate(RANDOM);
-        FoxData.store(fox, fresh);
-        src.sendFeedback(() -> Text.literal("Fox rerolled: " + fresh.element().kamiName()
-            + ", " + fresh.tails() + " tails").formatted(fresh.element().color()), true);
+        KitsuneData fresh = FoxStorage.generate(RANDOM);
+        FoxStorage.store(fox, fresh);
+        src.sendFeedback(() -> Text.literal("Fox rerolled: " + fresh.element.kamiName()
+                + ", " + fresh.tails + " tails").formatted(fresh.element.color()), true);
         return 1;
     }
 
@@ -448,21 +449,26 @@ public final class CdCommand {
             return 0;
         }
         ServerWorld world = player.getServerWorld();
+        // v0.9.6: spawn KitsuneEntity directly. Previously we spawned a
+        // vanilla FoxEntity which triggered FoxSpawnHandler to replace it
+        // with a freshly-randomized kitsune — overwriting the element and
+        // tail count the player requested. This caused /cd fox summon to
+        // silently produce wrong-element / wrong-tails kitsune.
         com.cutedifficult.entity.KitsuneEntity kitsune =
                 com.cutedifficult.entity.ModEntities.KITSUNE.create(world);
         if (kitsune == null) {
             src.sendError(Text.literal("Failed to spawn kitsune."));
             return 0;
         }
-        kitsune.refreshPositionAndAngles(player.getX(), player.getY(), player.getZ(),
+        kitsune.refreshPositionAndAngles(
+                player.getX(), player.getY(), player.getZ(),
                 player.getYaw(), player.getPitch());
-        FoxData data = new FoxData(el, FoxPersonality.random(RANDOM), tails, 0, 0L, 0);
-        FoxData.store(kitsune, data);
+        KitsuneData data = KitsuneData.of6(el, FoxPersonality.random(RANDOM), tails, 0, 0L, 0);
+        FoxStorage.store(kitsune, data);
         com.cutedifficult.spirit.FoxStats.applyHpForTails(kitsune, tails);
         world.spawnEntity(kitsune);
         src.sendFeedback(() -> Text.literal("Summoned " + el.kamiName() + " kitsune with "
-                + tails + " tails (" + (int)com.cutedifficult.spirit.FoxStats.hpForTails(tails)
-                + " HP)").formatted(el.color()), true);
+                + tails + " tails").formatted(el.color()), true);
         return 1;
     }
 

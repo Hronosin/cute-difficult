@@ -1,7 +1,8 @@
 package com.cutedifficult.event;
 
 import com.cutedifficult.CuteDifficult;
-import com.cutedifficult.spirit.FoxData;
+import com.cutedifficult.spirit.KitsuneData;
+import com.cutedifficult.spirit.FoxStorage;
 import com.cutedifficult.spirit.SpiritData;
 import com.cutedifficult.util.DifficultyMode;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
@@ -75,20 +76,20 @@ public final class FoxDeathHandler {
         if (killer == null) return;
 
         Random random = new Random();
-        FoxData victimData = FoxData.getOrCreate(fox, random);
+        KitsuneData victimData = FoxStorage.getOrCreate(fox, random);
 
         // 1) Penalize killer.
         MinecraftServer server = killer.getServer();
         if (server != null) {
-            SpiritData.add(server, killer, victimData.element(), -SPIRIT_PENALTY);
-            SpiritData.addKarma(server, killer, KARMA_PENALTY * victimData.tails());
+            SpiritData.add(server, killer, victimData.element, -SPIRIT_PENALTY);
+            SpiritData.addKarma(server, killer, KARMA_PENALTY * victimData.tails);
         }
 
         killer.sendMessage(
             Text.literal("You have slain a ")
-                .append(Text.literal(victimData.element().kamiName() + " kitsune")
-                    .formatted(victimData.element().color()))
-                .append(Text.literal(" (" + victimData.tails() + " tails). The other foxes saw."))
+                .append(Text.literal(victimData.element.kamiName() + " kitsune")
+                    .formatted(victimData.element.color()))
+                .append(Text.literal(" (" + victimData.tails + " tails). The other foxes saw."))
                 .formatted(Formatting.DARK_RED, Formatting.ITALIC),
             false
         );
@@ -102,16 +103,16 @@ public final class FoxDeathHandler {
             f -> f != fox && f.isAlive());
 
         for (FoxEntity witness : witnesses) {
-            FoxData wData = FoxData.getOrCreate(witness, random);
-            FoxData updated = new FoxData(
-                wData.element(),
-                wData.personality(),
-                wData.tails(),
+            KitsuneData wData = FoxStorage.getOrCreate(witness, random);
+            KitsuneData updated = KitsuneData.of6(
+                wData.element,
+                wData.personality,
+                wData.tails,
                 0, // trust reset to zero
-                wData.lastFedTickStamp(),
-                wData.witnessedKills() + 1
+                wData.lastFedTickStamp,
+                wData.witnessedKills + 1
             );
-            FoxData.store(witness, updated);
+            FoxStorage.store(witness, updated);
 
             // Visual cue: angry-villager particles burst from each witness.
             world.spawnParticles(

@@ -17,7 +17,7 @@ import java.util.UUID;
  * "young Kasai" and "matured Kasai" are separate entries — different
  * recordings yield different lore reveals.
  *
- * <p>Like {@link FoxData}, this is in-memory cached. Persistence
+ * <p>Like {@link KitsuneData}, this is in-memory cached. Persistence
  * across sessions is deferred — for v0.5 the bestiary resets on world
  * reload. Acceptable for early-game testing; will be fixed with a proper
  * persistent state attached to the player entity later.
@@ -38,9 +38,9 @@ public final class BestiaryData {
      * Adds an entry for this player. Returns true if newly added,
      * false if it was already present.
      */
-    public static boolean recordEntry(ServerPlayerEntity player, FoxData data) {
+    public static boolean recordEntry(ServerPlayerEntity player, KitsuneData data) {
         Set<String> playerEntries = ENTRIES.computeIfAbsent(player.getUuid(), k -> new HashSet<>());
-        return playerEntries.add(entryKey(data.element(), data.tails()));
+        return playerEntries.add(entryKey(data.element, data.tails));
     }
 
     /** Returns the set of entries this player has discovered. */
