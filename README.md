@@ -137,6 +137,30 @@ When **all 9** are active simultaneously — **the Great Blessing of Inari**. En
 
 **BUT.** If you hit a kitsune, it'll retaliate — the Great Blessing won't protect you. 10 seconds of fury, then it calms back down. Inari granted you **life**, not a **license to kill**.
 
+### Enhanced Enchantments (give a fox your gear)
+
+Bring a kitsune an enchanted weapon, tool, or piece of armor whose enchantment matches its element. Wait 30 seconds. It transforms the enchantment into a meme-named, buffed version — and the blessing stays on the gear, so anvils can't strip it. Better yet, blessings from different elements **stack** on one item.
+
+A taste of the 22 on offer: **Thor, Son of Odin** (Channeling → lightning along the trident's whole flight), **Hephaestus Had Enough** (Fire Aspect → fire AOE), **Raiden** (Sharpness → lightning on hit), **Sub-Zero** (Sharpness → freeze, with a fatality on low-HP foes), **Let's dance!** (Sweeping Edge → wider, harder sweeps), **Omnislash** (pierces a line of enemies), **Nanomachines, son!** (Protection → Resistance burst when hit), **I Am Inevitable** (Blast Protection → explosions barely scratch you), **Now This Is Water Bending** (Riptide anywhere), **Photosynthesis Respecter** (Mending → repairs in sunlight), **Sunshot** (Power → burning, glowing arrows), and more. Effect strength scales with the source enchant level.
+
+### Tiered Offerings
+
+Each element accepts three tiers of offering: a **cheap** one (small reward, easy to get), a **standard** one, and a **premium** one (a rare endgame resource that pays out ×2.5). Bring a Kasai fox coal for a nibble, magma cream for a real gift, or a blaze rod for a treasure it won't forget.
+
+### The Sky Hates You Too (Moons, Weather, Astrology)
+
+Three celestial systems layer on top of everything, each readable and plannable — and each ready to ruin your night.
+
+**Special Moons.** Each night may roll one of nine: Blood, Pumpkin, Harvest, Frost, Wolf, Mirror, Cursed, Blue, or Hollow. Every one pairs a threat with a reward — the Blood Moon empowers every hostile (and the Wither) but doubles their loot; the Harvest Moon is peaceful and grows your crops; the Hollow Moon is a portent of something ancient.
+
+**Weather Events.** Six of them — Acid Rain, Thunderstorm of Power, Blizzard, Heatwave, Creeping Fog, Meteor Shower — roll daily, each with its own hazards and spoils. And when a moon and weather coincide, named combos fire: *Tempest of Blood*, *The Veil Thins*, *The Long Winter*.
+
+**Astrology.** This is the deep end. Nine celestial bodies orbit at different speeds; their exact positions are a function of the day and even the hour. They form aspects — conjunctions, trines, squares, oppositions — and the strength of an offering to a given element depends on the precise angle of its star, scaled by how exactly the aspect lines up. Bodies go **retrograde** (inverting their meaning), sit in **decans** (sub-element tints), and occasionally arrange into **Grand Trines**, **Yods**, **Grand Alignments**, **Grand Crosses**, and — rarest of all — a **Great Convergence** where all nine gather in one quarter of the sky.
+
+Read it all with `/cd sky`, which prints a full ephemeris: positions, retrograde direction, decans, active aspects with tightness percentages, special configurations, and a forecast of the next shift. Track it like a scientist, or offer blind and let the stars punish you.
+
+*And if you're the kind of player who keeps a star journal — during a Great Convergence, there's a rite. We won't tell you how. You'll figure it out.*
+
 ### The Bestiary
 
 **Scroll of Inquiry** (4 paper + 2 ender pearl + 1 feather = 4 scrolls). Right-click a kitsune to log it in your bestiary.
@@ -183,6 +207,10 @@ Toggle with **H** (rebindable in Options → Controls → Cute Difficult).
 /cd spirit <element> <set|add> <n>  - adjust Spirit
 /cd karma <set|add> <n>   - adjust Karma
 /cd fox info|tails|element|trust|personality|reroll|summon
+/cd sky                   - read the full ephemeris (positions, aspects, forecast)
+/cd moon list|current|clear|<type>      - special moons (force is op)
+/cd weather list|current|clear|<type>   - weather events (force is op)
+/cd astrology shift <days>|reset        - time-shift the sky for testing (op)
 ```
 
 Element shortnames: `fire water earth wind thunder forest ice spirit sky`

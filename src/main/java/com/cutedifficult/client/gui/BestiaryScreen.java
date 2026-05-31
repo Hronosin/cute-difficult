@@ -4,57 +4,34 @@ import com.cutedifficult.spirit.Element;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 
-import java.util.List;
 import java.util.Set;
 
 /**
- * The Bestiary of Inari custom GUI.
+ * The Bestiary of Inari — a clean scrollable list of all nine elements and
+ * their five tail-tiers, showing which the player has discovered.
  *
- * <p><b>v0.6.1 fix:</b> the previous render() called {@code super.render()}
- * AT THE END, which re-applied the screen background blur on top of our
- * drawn content — making everything look smeared. Fix: call
- * {@link #renderBackground} at the very top, then draw book + text, then
- * delegate to super to draw widgets (buttons). The super call still
- * triggers a background render internally but at that point the book
- * texture acts as a foreground layer that's preserved.
- *
- * <p>Actually, simpler approach: override {@link #renderBackground} to
- * be a no-op (or to just draw the blur once at the start), and call
- * background + book + text + super.render in the correct order.
- *
- * <p>Final structure of render():
- * <ol>
- *   <li>{@code renderBackground} — vanilla translucent darkening.</li>
- *   <li>Draw book.png texture.</li>
- *   <li>Draw page-specific text content.</li>
- *   <li>{@code super.render} for buttons — but it'll re-render the
- *       background. To prevent that we override renderBackground to be
- *       a no-op after the first call, OR we just live with the buttons
- *       being drawn directly.</li>
- * </ol>
- *
- * <p>Cleanest fix: don't call super.render at all; manually draw the
- * drawables. We iterate this.children() for the visual rendering.
+ * <p>Replaces the old book.png page-flip layout with a standard dark panel
+ * and mouse-wheel scrolling, so the player can see everything at a glance.
+ * Each element block shows: kami name, flavor, tiered offerings (cheap /
+ * standard / premium), and a row of five tail-tier badges (lit if discovered).
  */
 public class BestiaryScreen extends Screen {
-
-    private static final Identifier BOOK_TEXTURE = Identifier.ofVanilla("textures/gui/book.png");
-    private static final int BOOK_WIDTH = 192;
-    private static final int BOOK_HEIGHT = 192;
-    private static final int TOTAL_PAGES = 10;
 
     private final Set<String> entries;
     private final int totalDiscovered;
     private final int maxEntries;
-    private int pageIndex = 0;
 
-    private ButtonWidget nextButton;
-    private ButtonWidget prevButton;
+    private double scroll = 0;
+    private int contentHeight = 0;
+
+    private static final String[] TIERS = {"young", "matured", "venerable", "ancient", "Kyuubi"};
+    private static final int PANEL_WIDTH = 340;
+    private static final int ELEMENT_BLOCK_HEIGHT = 78;
+    private static final int HEADER_HEIGHT = 40;
 
     public BestiaryScreen(Set<String> entries, int maxEntries) {
         super(Text.literal("Bestiary of Inari"));
@@ -65,162 +42,136 @@ public class BestiaryScreen extends Screen {
 
     @Override
     protected void init() {
-        super.init();
-
-        int bookLeft = (this.width - BOOK_WIDTH) / 2;
-        int bookTop = (this.height - BOOK_HEIGHT) / 2;
-
-        this.prevButton = ButtonWidget.builder(
-                Text.literal("◀ Prev"),
-                btn -> changePage(-1)
-        ).dimensions(bookLeft + 20, bookTop + BOOK_HEIGHT - 24, 50, 18).build();
-
-        this.nextButton = ButtonWidget.builder(
-                Text.literal("Next ▶"),
-                btn -> changePage(1)
-        ).dimensions(bookLeft + BOOK_WIDTH - 70, bookTop + BOOK_HEIGHT - 24, 50, 18).build();
-
-        ButtonWidget doneButton = ButtonWidget.builder(
-                Text.literal("Done"),
-                btn -> this.close()
-        ).dimensions(bookLeft + (BOOK_WIDTH - 50) / 2, bookTop + BOOK_HEIGHT + 4, 50, 18).build();
-
-        this.addDrawableChild(prevButton);
-        this.addDrawableChild(nextButton);
-        this.addDrawableChild(doneButton);
-
-        updateButtonStates();
+        this.contentHeight = HEADER_HEIGHT + Element.values().length * ELEMENT_BLOCK_HEIGHT + 20;
     }
 
-    private void changePage(int delta) {
-        pageIndex = Math.max(0, Math.min(TOTAL_PAGES - 1, pageIndex + delta));
-        updateButtonStates();
-    }
-
-    private void updateButtonStates() {
-        prevButton.active = pageIndex > 0;
-        nextButton.active = pageIndex < TOTAL_PAGES - 1;
-    }
-
-    /**
-     * v0.6.1: override the parent's renderBackground to a no-op so calling
-     * super.render(...) at the END of our render() doesn't re-blur over
-     * our book content. We handle background ourselves explicitly at the
-     * top of render().
-     */
     @Override
-    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-        // No-op. Real background drawn from render() directly.
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        int viewport = this.height - 40;
+        double maxScroll = Math.max(0, contentHeight - viewport);
+        scroll = Math.max(0, Math.min(maxScroll, scroll - verticalAmount * 18));
+        return true;
     }
 
     @Override
     public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
-        // 1) Draw the screen darkening + blur ONCE, ourselves.
-        super.renderBackground(ctx, mouseX, mouseY, delta);
+        // NOTE: do NOT call this.renderBackground(...) — in 1.21.1 it applies
+        // a gaussian blur that smears over everything we draw. Instead draw a
+        // plain translucent darkening fill ourselves.
+        ctx.fill(0, 0, this.width, this.height, 0xC0000000);
 
-        int bookLeft = (this.width - BOOK_WIDTH) / 2;
-        int bookTop = (this.height - BOOK_HEIGHT) / 2;
+        int panelLeft = (this.width - PANEL_WIDTH) / 2;
+        int panelRight = panelLeft + PANEL_WIDTH;
+        int top = 20;
+        int bottom = this.height - 20;
 
-        // 2) Draw the book texture as a foreground.
-        ctx.drawTexture(BOOK_TEXTURE, bookLeft, bookTop, 0, 0, BOOK_WIDTH, BOOK_HEIGHT, 256, 256);
+        // Panel background.
+        ctx.fill(panelLeft - 6, top - 6, panelRight + 6, bottom + 6, 0xF0100018);
+        ctx.fill(panelLeft - 4, top - 4, panelRight + 4, bottom + 4, 0xFF2A1A3A);
 
-        // 3) Page content overlay.
-        if (pageIndex == 0) {
-            renderCoverPage(ctx, bookLeft, bookTop);
-        } else {
-            Element element = Element.values()[pageIndex - 1];
-            renderElementPage(ctx, bookLeft, bookTop, element);
+        // Enable scissor so content clips to the panel.
+        ctx.enableScissor(panelLeft - 4, top, panelRight + 4, bottom);
+
+        int y = top - (int) scroll;
+
+        // Header.
+        ctx.drawCenteredTextWithShadow(this.textRenderer,
+                Text.literal("✦ Bestiary of Inari ✦").formatted(Formatting.GOLD, Formatting.BOLD),
+                this.width / 2, y + 4, 0xFFFFFF);
+        ctx.drawCenteredTextWithShadow(this.textRenderer,
+                Text.literal("Discovered " + totalDiscovered + " / " + maxEntries)
+                        .formatted(Formatting.GRAY),
+                this.width / 2, y + 18, 0xFFFFFF);
+        y += HEADER_HEIGHT;
+
+        // Element blocks.
+        for (Element element : Element.values()) {
+            renderElementBlock(ctx, element, panelLeft, y);
+            y += ELEMENT_BLOCK_HEIGHT;
         }
 
-        // 4) Buttons — super.render handles them. Our overridden
-        // renderBackground above is a no-op, so super won't re-blur.
-        super.render(ctx, mouseX, mouseY, delta);
-    }
+        ctx.disableScissor();
 
-    private void renderCoverPage(DrawContext ctx, int bookLeft, int bookTop) {
-        int textLeft = bookLeft + 36;
-        int contentTop = bookTop + 30;
-
-        ctx.drawText(this.textRenderer,
-                Text.literal("Bestiary of Inari").formatted(Formatting.GOLD, Formatting.BOLD),
-                textLeft, contentTop, 0x000000, false);
-
-        ctx.drawText(this.textRenderer,
-                Text.literal("Discovered: " + totalDiscovered + " / " + maxEntries)
-                        .formatted(Formatting.DARK_GRAY),
-                textLeft, contentTop + 16, 0x000000, false);
-
-        String[] blurb = {
-                "The kitsune walk among",
-                "us. Those whom you have",
-                "inquired upon are recorded",
-                "here.",
-                "",
-                "Turn the pages to behold",
-                "the nine kami of Inari."
-        };
-        for (int i = 0; i < blurb.length; i++) {
-            ctx.drawText(this.textRenderer,
-                    Text.literal(blurb[i]).formatted(Formatting.DARK_GRAY, Formatting.ITALIC),
-                    textLeft, contentTop + 40 + i * 11, 0x000000, false);
+        // Scroll hint.
+        if (contentHeight > (bottom - top)) {
+            ctx.drawCenteredTextWithShadow(this.textRenderer,
+                    Text.literal("scroll ↕").formatted(Formatting.DARK_GRAY),
+                    this.width / 2, bottom - 2, 0xFFFFFF);
         }
-
-        ctx.drawText(this.textRenderer,
-                Text.literal("Page " + (pageIndex + 1) + " / " + TOTAL_PAGES)
-                        .formatted(Formatting.DARK_GRAY),
-                textLeft, bookTop + BOOK_HEIGHT - 42, 0x000000, false);
+        // No widgets to draw — this screen is pure scroll content, so we
+        // intentionally skip super.render() to avoid re-applying the blur.
     }
 
-    private void renderElementPage(DrawContext ctx, int bookLeft, int bookTop, Element element) {
-        int textLeft = bookLeft + 36;
-        int contentTop = bookTop + 22;
+    private void renderElementBlock(DrawContext ctx, Element element, int panelLeft, int y) {
+        int x = panelLeft + 8;
 
-        ctx.drawText(this.textRenderer,
+        // Element name.
+        ctx.drawTextWithShadow(this.textRenderer,
                 Text.literal(element.kamiName()).formatted(element.color(), Formatting.BOLD),
-                textLeft, contentTop, 0x000000, false);
+                x, y, 0xFFFFFF);
 
-        List<net.minecraft.text.OrderedText> wrapped = this.textRenderer.wrapLines(
-                Text.literal(element.flavor()).formatted(Formatting.DARK_GRAY, Formatting.ITALIC),
-                BOOK_WIDTH - 70
-        );
-        int lineY = contentTop + 14;
-        for (var line : wrapped) {
-            ctx.drawText(this.textRenderer, line, textLeft, lineY, 0x000000, false);
-            lineY += 10;
+        // Discovered count for this element.
+        int discovered = 0;
+        for (String tier : TIERS) {
+            if (entries.contains(element.name() + ":" + tier)) discovered++;
         }
+        ctx.drawTextWithShadow(this.textRenderer,
+                Text.literal(discovered + "/5").formatted(
+                        discovered == 5 ? Formatting.GREEN : Formatting.GRAY),
+                panelLeft + PANEL_WIDTH - 32, y, 0xFFFFFF);
 
-        lineY += 6;
-        String[] tiers = {"young", "matured", "venerable", "ancient", "Kyuubi"};
-        boolean anyDiscovered = false;
-        for (String tier : tiers) {
-            String key = element.name() + ":" + tier;
-            boolean known = entries.contains(key);
-            if (known) anyDiscovered = true;
+        // Flavor (wrapped to one short line).
+        String flavor = element.flavor();
+        if (flavor.length() > 58) flavor = flavor.substring(0, 55) + "...";
+        ctx.drawTextWithShadow(this.textRenderer,
+                Text.literal(flavor).formatted(Formatting.DARK_GRAY, Formatting.ITALIC),
+                x, y + 11, 0xFFFFFF);
 
-            Text line = known
-                    ? Text.literal("✓ ").formatted(Formatting.DARK_GREEN)
-                    .copy().append(Text.literal(tier).formatted(Formatting.BLACK))
-                    : Text.literal("✗ ").formatted(Formatting.DARK_GRAY)
-                    .copy().append(Text.literal("(unknown)").formatted(Formatting.DARK_GRAY));
-            ctx.drawText(this.textRenderer, line, textLeft, lineY, 0x000000, false);
-            lineY += 11;
-        }
-
-        if (anyDiscovered) {
-            lineY += 6;
+        // Tier badges — five boxes, lit if discovered.
+        int badgeY = y + 24;
+        int badgeX = x;
+        for (String tier : TIERS) {
+            boolean known = entries.contains(element.name() + ":" + tier);
+            int color = known ? colorOf(element.color()) : 0xFF333333;
+            ctx.fill(badgeX, badgeY, badgeX + 60, badgeY + 11, color);
             ctx.drawText(this.textRenderer,
-                    Text.literal("Favored offering:").formatted(Formatting.DARK_GRAY),
-                    textLeft, lineY, 0x000000, false);
-            ctx.drawText(this.textRenderer,
-                    Text.literal(element.correctOffering().getName().getString())
-                            .formatted(element.color()),
-                    textLeft, lineY + 10, 0x000000, false);
+                    Text.literal(tier).formatted(known ? Formatting.WHITE : Formatting.DARK_GRAY),
+                    badgeX + 3, badgeY + 2, 0xFFFFFF, false);
+            badgeX += 64;
         }
 
+        // Offerings row: cheap / standard / premium item icons.
+        int offY = y + 40;
+        ctx.drawTextWithShadow(this.textRenderer,
+                Text.literal("Offerings:").formatted(Formatting.GRAY),
+                x, offY + 4, 0xFFFFFF);
+        int iconX = x + 64;
+        drawOffering(ctx, new ItemStack(element.cheapOffering()), iconX, offY, "cheap");
+        drawOffering(ctx, new ItemStack(element.standardOffering()), iconX + 90, offY, "standard");
+        drawOffering(ctx, new ItemStack(element.premiumOffering()), iconX + 190, offY, "premium");
+
+        // Separator line.
+        ctx.fill(panelLeft + 6, y + ELEMENT_BLOCK_HEIGHT - 6,
+                panelLeft + PANEL_WIDTH - 6, y + ELEMENT_BLOCK_HEIGHT - 5, 0xFF3D2A55);
+    }
+
+    private void drawOffering(DrawContext ctx, ItemStack stack, int x, int y, String label) {
+        ctx.drawItem(stack, x, y);
+        Formatting labelColor = switch (label) {
+            case "cheap" -> Formatting.DARK_GRAY;
+            case "premium" -> Formatting.GOLD;
+            default -> Formatting.GRAY;
+        };
         ctx.drawText(this.textRenderer,
-                Text.literal("Page " + (pageIndex + 1) + " / " + TOTAL_PAGES)
-                        .formatted(Formatting.DARK_GRAY),
-                textLeft, bookTop + BOOK_HEIGHT - 42, 0x000000, false);
+                Text.literal(label).formatted(labelColor),
+                x + 18, y + 4, 0xFFFFFF, false);
+    }
+
+    /** Map a Formatting color to an ARGB int with some transparency for badges. */
+    private int colorOf(Formatting fmt) {
+        Integer c = fmt.getColorValue();
+        int rgb = (c == null) ? 0x888888 : c;
+        return 0xCC000000 | rgb;
     }
 
     @Override

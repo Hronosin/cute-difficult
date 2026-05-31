@@ -6,6 +6,58 @@ Versioning was informal during development. v1.0.0-beta is the **first public re
 
 ---
 
+## v1.1.0-beta — The Cosmic Update
+
+The world now answers to the sky. This update adds three intertwined celestial systems, a full enhanced-enchantment economy, smarter bosses, and per-element kitsune passives — turning the spiritual layer from a side path into a science you have to study.
+
+### Added — Kitsune Passives
+- Every kitsune, from tail one, now reshapes the world around it through its element (Kasai melts ice, Mori speeds growth, Kaminari strikes hostiles, Kori freezes water, Yurei teleports, and so on).
+- Each element also grants the fox immunity to its thematic damage type (Kasai → fire/lava, Kaminari → lightning, Kori → freeze, Yurei → magic/wither, etc.).
+
+### Added — Enhanced Enchantments (22 meme-named blessings)
+- Give a kitsune an enchanted weapon/tool/armor matching its element; after 30 seconds it transforms into a meme-named enhanced version with a buffed effect.
+- Markers live on the gear itself (not books) and **stack** — one item can carry multiple different-element blessings.
+- Effect strength scales with the source enchant level.
+- Highlights: Thor Son of Odin (lightning along trident flight), Hephaestus Had Enough (fire AOE), Raiden, Sub-Zero (freeze + fatality), Let's dance! (wider sweep), Omnislash (pierce line), Nanomachines son! (Resistance on hit), I Am Inevitable (explosion negation), Sunshot (burning arrows), and more.
+
+### Added — Tiered Offerings
+- Each element now accepts three offering tiers: cheap (×0.5 reward), standard (×1.0), and premium (×2.5, an endgame resource).
+- Premium offerings get special feedback and feel like treasures.
+
+### Added — Smart Wither Boss
+- Three HP-keyed phases: Artillery (leads its shots), Kiter (fan volleys + dash AOE), Berserk (teleport-dodge, omnidirectional spam, Wither Storm).
+- Anti-cheese: sees through invisibility, teleports out of sniping holes.
+- Guaranteed Nether Star delivery — even if the star burns in lava during the fight.
+- Empowered by the Blood Moon.
+
+### Added — Special Moons (9)
+- Each night may roll a special moon: Blood, Pumpkin, Harvest, Frost, Wolf, Mirror, Cursed, Blue, Hollow — each with a paired downside and upside.
+- Admin/test commands: `/cd moon list | current | clear | <type>`.
+
+### Added — Weather Events (6)
+- Acid Rain, Thunderstorm of Power, Blizzard, Heatwave, Creeping Fog, Meteor Shower — rolled daily, each with hazards and rewards.
+- Moon + weather **combos**: Tempest of Blood, The Veil Thins, The Long Winter.
+- Commands: `/cd weather list | current | clear | <type>`.
+
+### Added — Astrology (HBM-grade clockwork)
+- Nine celestial bodies orbit at coprime periods; positions are a deterministic function of continuous sky-time (intraday motion).
+- Bodies form aspects (conjunction, sextile, square, trine, opposition) whose effect on offerings scales with orb tightness — catch the peak.
+- Retrograde periods invert aspect polarity. Decans tint each body with a sub-element. Multi-body configurations: Grand Trine, Yod, Grand Alignment, Grand Cross.
+- **Great Convergence** — the rarest window, when all nine bodies gather within a 40° arc.
+- **The Rite of the Nine** — a hidden, undocumented ritual: during a Great Convergence, offer one premium offering of every element together to earn the Mark of the Nine (a permanent boost to all nine spirits).
+- Read the sky with `/cd sky` (full ephemeris: positions, retrograde, decans, aspects with tightness, special configs, and a forecast of the next aspect shift). Test with `/cd astrology shift <days>`.
+
+### Changed
+- Bestiary GUI rebuilt as a clean scrollable list (no more book page-flip), showing tier badges and offering icons per element.
+- Spirit gain now folds in lunar (new moon ×1.5) and astrological multipliers on top of trust, greed, and offering tier.
+
+### Fixed
+- Anvil no longer strips enhanced-enchant blessings — markers go straight onto gear given to the fox rather than onto books.
+- Various `LivingEntity.damage` / `PlayerEntity.damage` signature corrections for 1.21.1.
+- Particle visibility — special-event particles now use forced player-target delivery so they show even on low particle settings.
+
+---
+
 ## v1.0.0-beta — First Public Release
 
 The mod is feature-complete enough to release. There will be bugs, there are TODOs, but **the core works**.

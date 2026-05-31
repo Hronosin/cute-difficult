@@ -92,8 +92,9 @@ public final class FoxOfferingHandler {
         Element element = data.element;
         FoxPersonality personality = data.personality;
 
-        if (stack.getItem() == element.correctOffering()) {
-            return handleCorrect(player, world, fox, data, element, personality, stack, server, now);
+        if (element.isAccepted(stack.getItem())) {
+            Element.OfferingTier tier = element.offeringTier(stack.getItem());
+            return handleCorrect(player, world, fox, data, element, personality, stack, server, now, tier);
         } else if (element.isOffended(stack.getItem())) {
             return handleOffense(player, world, fox, data, element, personality, server, now);
         } else {
@@ -104,7 +105,7 @@ public final class FoxOfferingHandler {
     private static ActionResult handleCorrect(
         ServerPlayerEntity player, ServerWorld world, FoxEntity fox, KitsuneData data,
         Element element, FoxPersonality personality, ItemStack stack,
-        MinecraftServer server, long now
+        MinecraftServer server, long now, Element.OfferingTier tier
     ) {
         boolean satisfied = (now - data.lastFedTickStamp < 24000)
             && (data.trustLevel > 50)
@@ -119,11 +120,29 @@ public final class FoxOfferingHandler {
 
         double trustFactor = 0.5 + (data.trustLevel / 100.0);
         double greedFactor = 1.0 - (personality.greed() / 200.0);
-        int spiritGain = Math.max(1, (int) Math.round(BASE_SPIRIT_REWARD * trustFactor * greedFactor));
+
+        // New moon night: the spirits listen closely — extra spirit gain.
+        double lunarFactor = com.cutedifficult.event.LunarCycleHandler.isNewMoon(world) ? 1.5 : 1.0;
+
+        // Astrology: sign-of-day / alignment / comet multiplier for this element.
+        double astroFactor = com.cutedifficult.event.AstrologyHandler.spiritMultiplier(element);
+
+        // Retrograde: the spirits may misread a perfectly good offering and
+        // take it as an insult. Players will hate this. That's the point.
+        // Tense aspect on this element's celestial body may misfire the offering.
+        if (com.cutedifficult.event.AstrologyHandler.offeringMisfire(element)) {
+            player.sendMessage(Text.literal("The stars are wrong for this element. The kitsune recoils — your gift felt like a slight.")
+                .formatted(Formatting.DARK_RED, Formatting.ITALIC), true);
+            return handleOffense(player, world, fox, data, element, personality, server, now);
+        }
+
+        int spiritGain = Math.max(1, (int) Math.round(
+            BASE_SPIRIT_REWARD * trustFactor * greedFactor * tier.multiplier * lunarFactor * astroFactor));
 
         SpiritData.add(server, player, element, spiritGain);
 
-        int trustGain = Math.max(1, (int) Math.round(MAX_TRUST_GAIN * (1.0 - personality.trauma() / 200.0)));
+        int trustGain = Math.max(1, (int) Math.round(
+            MAX_TRUST_GAIN * (1.0 - personality.trauma() / 200.0) * tier.multiplier));
         int oldTrust = data.trustLevel;
         int newTrust = oldTrust + trustGain;
         KitsuneData updated = data.withTrust(newTrust).withLastFed(now);
@@ -131,11 +150,18 @@ public final class FoxOfferingHandler {
 
         stack.decrement(1);
 
+        // Tier-scaled visual feedback — premium offerings feel special.
+        int particleCount = tier == Element.OfferingTier.PREMIUM ? 20
+            : (tier == Element.OfferingTier.STANDARD ? 8 : 4);
         world.spawnParticles(
             ParticleTypes.HAPPY_VILLAGER,
             fox.getX(), fox.getY() + 0.6, fox.getZ(),
-            6, 0.3, 0.3, 0.3, 0.1
+            particleCount, 0.3, 0.3, 0.3, 0.1
         );
+        if (tier == Element.OfferingTier.PREMIUM) {
+            world.spawnParticles(ParticleTypes.TOTEM_OF_UNDYING,
+                fox.getX(), fox.getY() + 0.8, fox.getZ(), 15, 0.4, 0.4, 0.4, 0.2);
+        }
         world.playSound(
             null, fox.getX(), fox.getY(), fox.getZ(),
             SoundEvents.ENTITY_FOX_EAT,
@@ -143,7 +169,12 @@ public final class FoxOfferingHandler {
             1.0f, 1.0f + RANDOM.nextFloat() * 0.2f
         );
 
-        sendMurmur(player, "The fox accepts your offering. Something in the air shifts.", element);
+        String murmur = switch (tier) {
+            case PREMIUM -> "The fox's eyes widen. This is a treasure. It will not forget this.";
+            case CHEAP -> "The fox nibbles the humble offering. A small kindness, noted.";
+            default -> "The fox accepts your offering. Something in the air shifts.";
+        };
+        sendMurmur(player, murmur, element);
 
         // Blessing milestone: cross a multiple of BLESSING_TRUST_INTERVAL.
         int oldMilestone = oldTrust / BLESSING_TRUST_INTERVAL;

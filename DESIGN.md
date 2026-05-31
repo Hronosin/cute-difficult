@@ -50,6 +50,18 @@ The kami names are real Shinto deities (Hi-no-Kagutsuchi, Suijin, etc.). The ass
 
 ---
 
+## The cosmos as a system to study (v1.1)
+
+The celestial systems — moons, weather, and especially astrology — exist to answer a design question: *what does late-game mastery look like in a mod about spirits?*
+
+The early game is about survival and first contact. The mid game is about building trust with nine elements. But once you've befriended everyone, what's left? The answer this update gives: **the sky becomes a clock you learn to read.**
+
+Astrology is deliberately, unapologetically **dense** — modeled after the kind of opaque, self-taught mechanics in HBM's Nuclear Tech Mod, where the reward for understanding a system is the ability to exploit it. Nothing about the orbital math is explained in-game beyond `/cd sky`. A casual player ignores it and offers blind, eating the occasional misfire. A dedicated player learns when Hoshi-Kasai conjuncts Hoshi-Kaminari, notes the date, and shows up with a stack of magma cream to farm spirit at ×2 during the tight peak of the orb.
+
+This creates a **knowledge economy**. The information — when aspects peak, when retrograde flips them, when the Great Convergence comes — is the real endgame resource. You can't trade it; you earn it by paying attention. The hidden Rite of the Nine is the ultimate expression: a reward gated not behind a boss or a grind, but behind *noticing*.
+
+The moons and weather are the accessible on-ramp to this mindset. They're legible at a glance (a Blood Moon announces itself), they pair downside with upside so they're decisions rather than punishments, and they teach the player that the world's state matters before astrology asks them to do trigonometry about it.
+
 ## Player Journey
 
 ### Hours 1-5: Confused suffering
@@ -78,7 +90,7 @@ After that — the final boss (TODO — Hollow Lord, an End Dragon overhaul) and
 
 ---
 
-## What's implemented (v1.0.0-beta)
+## What's implemented (v1.1.0-beta)
 
 Full list in the README. Briefly:
 
@@ -121,6 +133,23 @@ Full list in the README. Briefly:
 - Auto-roll on inventory entry
 - Combat multipliers (attacker/defender)
 
+**Enhanced Enchantments (v1.1):**
+- 22 meme-named transforms, fox-applied to gear (not books), stackable markers
+- Effects across attack / passive / projectile / damage hooks, scaled by level
+
+**Tiered Offerings (v1.1):**
+- cheap / standard / premium per element, with reward multipliers
+
+**Smart Wither (v1.1):**
+- 3 HP phases, leading shots, kiting, berserk teleport-dodge, guaranteed Nether Star
+
+**Celestial systems (v1.1):**
+- 9 special moons (random nightly, paired up/downside, admin commands)
+- 6 weather events + moon/weather combos
+- HBM-grade astrology: 9 orbital bodies, intraday motion, retrograde, decans, orb-tightness gradient, Grand Trine / Yod / Grand Alignment / Grand Cross / Great Convergence
+- Hidden Rite of the Nine (Mark of the Nine reward)
+- `/cd sky` ephemeris with forecast
+
 ---
 
 ## What's pending (post-release)
@@ -138,8 +167,9 @@ Roughly by priority:
 9. **Awakened Dragon companion** — Liberation ending at endgame.
 10. **Iron Will achievement** — for players reaching the dragon without ever feeding a kitsune.
 11. **Onigiri & dango** — crafted food that works with any element.
-12. **Constellation timing** — some blessings only activate during specific moon phases.
-13. **Visible tail-count rendering** — needs a render-mixin on FoxEntityRenderer.
+12. **Wolf Moon pack spawns & Mirror Moon damage reflection** — these two moons currently have loot/visuals but their signature effects (spawning wolf packs; reflecting damage both ways) are not yet wired.
+13. **Weather → element bonus** — weather events give hazards and loot but don't yet boost their themed element's offerings (Acid Rain → Mizu, etc.).
+14. **Visible tail-count rendering** — needs a render-mixin on FoxEntityRenderer.
 
 ---
 
