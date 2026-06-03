@@ -30,6 +30,9 @@ public final class ModItems {
     public static final Item BESTIARY_OF_INARI = register("bestiary_of_inari",
         new BestiaryOfInariItem(new Item.Settings().maxCount(1)));
 
+    public static final Item INTERSTELLAR = register("interstellar",
+        new InterstellarItem(new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC)));
+
     private static Item register(String name, Item item) {
         RegistryKey<Item> key = RegistryKey.of(Registries.ITEM.getKey(),
             Identifier.of(CuteDifficult.MOD_ID, name));

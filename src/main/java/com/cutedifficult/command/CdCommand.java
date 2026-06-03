@@ -88,6 +88,13 @@ public final class CdCommand {
         return builder.buildFuture();
     };
 
+    private static final SuggestionProvider<ServerCommandSource> ENCHANT_SUGGESTIONS = (ctx, builder) -> {
+        for (com.cutedifficult.spirit.EnhancedEnchant e : com.cutedifficult.spirit.EnhancedEnchant.values()) {
+            builder.suggest(e.markerId);
+        }
+        return builder.buildFuture();
+    };
+
     private CdCommand() {}
 
     public static void register() {
@@ -181,6 +188,7 @@ public final class CdCommand {
                 // /cd fox <info | tails N | element X | trust N | personality T N | reroll | summon X N>
                 .then(CommandManager.literal("fox")
                     .then(CommandManager.literal("info").executes(CdCommand::foxInfo))
+                    .then(CommandManager.literal("stage").executes(CdCommand::foxStage))
                     .then(CommandManager.literal("tails").requires(op())
                         .then(CommandManager.argument("count", IntegerArgumentType.integer(1, KitsuneData.MAX_TAILS))
                             .executes(ctx -> foxSetTails(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "count")))))
@@ -207,6 +215,15 @@ public final class CdCommand {
                                 .executes(ctx -> foxSummon(ctx.getSource(),
                                     StringArgumentType.getString(ctx, "element"),
                                     IntegerArgumentType.getInteger(ctx, "tails")))))))
+                .then(CommandManager.literal("enchant").requires(op())
+                    .then(CommandManager.argument("marker", StringArgumentType.word())
+                        .suggests(ENCHANT_SUGGESTIONS)
+                        .executes(ctx -> giveEnchant(ctx.getSource(),
+                            StringArgumentType.getString(ctx, "marker"), 1))
+                        .then(CommandManager.argument("level", IntegerArgumentType.integer(1, 5))
+                            .executes(ctx -> giveEnchant(ctx.getSource(),
+                                StringArgumentType.getString(ctx, "marker"),
+                                IntegerArgumentType.getInteger(ctx, "level"))))))
             );
         });
     }
@@ -510,6 +527,33 @@ public final class CdCommand {
 
     // ===== Fox commands =====
 
+    /** Public (non-op) command: show the nearest kitsune's growth stage. */
+    private static int foxStage(CommandContext<ServerCommandSource> ctx) {
+        ServerCommandSource src = ctx.getSource();
+        FoxEntity fox = findNearestFox(src);
+        if (fox == null) {
+            src.sendError(Text.literal("No kitsune nearby. Stand closer to one."));
+            return 0;
+        }
+        KitsuneData data = FoxStorage.getOrCreate(fox, RANDOM);
+        String stage = com.cutedifficult.item.ScrollOfInquiryItem.tailTier(data.tails);
+        String flavor = switch (stage) {
+            case "young" -> "A young spirit, still finding its paws.";
+            case "matured" -> "A matured kitsune, its power growing.";
+            case "venerable" -> "A venerable spirit, wise and strong.";
+            case "ancient" -> "An ancient kitsune — few live to see this.";
+            default -> "A Kyuubi. Nine tails. A living legend.";
+        };
+        final String fStage = stage, fFlavor = flavor;
+        src.sendFeedback(() -> Text.literal(data.element.kamiName() + " kitsune — ")
+            .formatted(data.element.color())
+            .append(Text.literal(fStage).formatted(Formatting.GOLD, Formatting.BOLD))
+            .append(Text.literal("  (" + data.tails + " tails)").formatted(Formatting.GRAY)), false);
+        src.sendFeedback(() -> Text.literal(fFlavor)
+            .formatted(Formatting.DARK_GRAY, Formatting.ITALIC), false);
+        return 1;
+    }
+
     private static int foxInfo(CommandContext<ServerCommandSource> ctx) {
         ServerCommandSource src = ctx.getSource();
         FoxEntity fox = findNearestFox(src);
@@ -633,6 +677,59 @@ public final class CdCommand {
         src.sendFeedback(() -> Text.literal("Summoned " + el.kamiName() + " kitsune with "
             + tails + " tails").formatted(el.color()), true);
         return 1;
+    }
+
+    // ===== Enchant =====
+
+    /** Apply a custom enhanced-enchant marker to the item in the player's main
+     *  hand, rebuilding the meme-name lore from all markers present. */
+    private static int giveEnchant(ServerCommandSource src, String markerId, int level) {
+        ServerPlayerEntity player = src.getPlayer();
+        if (player == null) {
+            src.sendError(Text.literal("Must be run by a player."));
+            return 0;
+        }
+        com.cutedifficult.spirit.EnhancedEnchant ench =
+            com.cutedifficult.spirit.EnhancedEnchant.byMarker(markerId);
+        if (ench == null) {
+            src.sendError(Text.literal("Unknown enchant marker: " + markerId));
+            return 0;
+        }
+        net.minecraft.item.ItemStack held = player.getMainHandStack();
+        if (held.isEmpty()) {
+            src.sendError(Text.literal("Hold an item in your main hand."));
+            return 0;
+        }
+
+        // Apply the stacking marker, then rebuild lore from ALL markers.
+        com.cutedifficult.spirit.EnchantMarkers.add(held, ench.markerId, level);
+        java.util.Map<String, Integer> markers =
+            com.cutedifficult.spirit.EnchantMarkers.read(held);
+        java.util.List<Text> lore = new java.util.ArrayList<>();
+        for (java.util.Map.Entry<String, Integer> m : markers.entrySet()) {
+            com.cutedifficult.spirit.EnhancedEnchant e =
+                com.cutedifficult.spirit.EnhancedEnchant.byMarker(m.getKey());
+            if (e == null) continue;
+            String suffix = m.getValue() > 1 ? " " + toRoman(m.getValue()) : "";
+            lore.add(Text.literal("\u2726 " + e.displayName + suffix)
+                .formatted(e.color(), Formatting.BOLD));
+            lore.add(Text.literal("  " + e.loreDescription)
+                .formatted(Formatting.DARK_GRAY, Formatting.ITALIC));
+        }
+        held.set(net.minecraft.component.DataComponentTypes.LORE,
+            new net.minecraft.component.type.LoreComponent(lore));
+
+        final com.cutedifficult.spirit.EnhancedEnchant fe = ench;
+        src.sendFeedback(() -> Text.literal("Applied " + fe.displayName + " (level " + level + ")")
+            .formatted(fe.color()), true);
+        return 1;
+    }
+
+    private static String toRoman(int n) {
+        return switch (n) {
+            case 1 -> "I"; case 2 -> "II"; case 3 -> "III";
+            case 4 -> "IV"; case 5 -> "V"; default -> String.valueOf(n);
+        };
     }
 
     // ===== Tier =====

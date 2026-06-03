@@ -35,6 +35,7 @@ public class CuteDifficultClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         EntityRendererRegistry.register(ModEntities.KITSUNE, FoxEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.HOLLOW_LORD, HollowLordRenderer::new);
 
         // Bestiary GUI receiver.
         ClientPlayNetworking.registerGlobalReceiver(BestiaryOpenPayload.PAYLOAD_ID, (payload, context) -> {

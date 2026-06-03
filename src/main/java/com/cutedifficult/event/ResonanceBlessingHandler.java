@@ -83,10 +83,17 @@ public final class ResonanceBlessingHandler {
     private static void refreshPlayer(MinecraftServer server, ServerPlayerEntity player) {
         EnumSet<Element> active = EnumSet.noneOf(Element.class);
         StringBuilder debugSpirits = new StringBuilder();
+
+        // Kegare gate: at DEFILED karma and above, the spirits withdraw their
+        // favor entirely — no blessings can hold. Active set stays empty.
+        SpiritData.KarmaTier ktier = SpiritData.karmaTier(server, player);
+        boolean blessingsSuppressed =
+            ktier == SpiritData.KarmaTier.DEFILED || ktier == SpiritData.KarmaTier.CURSED;
+
         for (Element element : Element.values()) {
             int value = SpiritData.get(server, player, element);
             debugSpirits.append(element.name()).append("=").append(value).append(" ");
-            if (value >= BLESSING_THRESHOLD) {
+            if (!blessingsSuppressed && value >= BLESSING_THRESHOLD) {
                 active.add(element);
             }
         }

@@ -2,6 +2,10 @@ package com.cutedifficult;
 
 import com.cutedifficult.command.CdCommand;
 import com.cutedifficult.entity.ModEntities;
+import com.cutedifficult.world.ModDimensions;
+import com.cutedifficult.event.HorizonHandler;
+import com.cutedifficult.event.HollowLordRitualHandler;
+import com.cutedifficult.event.HollowLordCombatHandler;
 import com.cutedifficult.event.BabyKitsuneHandler;
 import com.cutedifficult.event.BestiaryHandler;
 import com.cutedifficult.event.ChatCommandHandler;
@@ -60,7 +64,9 @@ public class CuteDifficult implements ModInitializer {
         LOGGER.info("[CuteDifficult] The kitsune are watching. The dragon stirs in the void.");
 
         ModEntities.init();
+        com.cutedifficult.entity.ModSpawns.init();
         ModItems.init();
+        ModDimensions.init();
         BestiaryHandler.registerPayloadType();
         SpiritOverlayHandler.registerPayloadType();
 
@@ -93,6 +99,10 @@ public class CuteDifficult implements ModInitializer {
         EnhancedEnchantEffectHandler.register();
         FoxFortuneHandler.register();
         BabyKitsuneHandler.register();
+        com.cutedifficult.event.KitsuneGrowthHandler.register();
+        com.cutedifficult.event.KarmaEffectsHandler.register();
+        com.cutedifficult.event.KitsuneCurseHandler.register();
+        com.cutedifficult.event.RedemptionHandler.register();
         FoxSleepAndPetHandler.register();
         NameTagHandler.register();
         JumpingMobsHandler.register();
@@ -101,6 +111,9 @@ public class CuteDifficult implements ModInitializer {
         WeatherEventHandler.register();
         AstrologyHandler.register();
         ConvergenceRitualHandler.register();
+        HorizonHandler.register();
+        HollowLordRitualHandler.register();
+        HollowLordCombatHandler.register();
         SpiritOverlayHandler.register();
         ResonanceBlessingHandler.register();
         QualityHandler.register();

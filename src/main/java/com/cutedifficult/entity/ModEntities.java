@@ -21,22 +21,36 @@ import net.minecraft.util.Identifier;
 public final class ModEntities {
 
     public static final RegistryKey<EntityType<?>> KITSUNE_KEY =
-            RegistryKey.of(Registries.ENTITY_TYPE.getKey(),
-                    Identifier.of(CuteDifficult.MOD_ID, "kitsune"));
+        RegistryKey.of(Registries.ENTITY_TYPE.getKey(),
+            Identifier.of(CuteDifficult.MOD_ID, "kitsune"));
 
     public static final EntityType<KitsuneEntity> KITSUNE = Registry.register(
-            Registries.ENTITY_TYPE,
-            KITSUNE_KEY,
-            EntityType.Builder.<KitsuneEntity>create(KitsuneEntity::new, SpawnGroup.CREATURE)
-                    .dimensions(0.6f, 0.7f)
-                    .maxTrackingRange(8)
-                    .build(CuteDifficult.MOD_ID + ":kitsune")
+        Registries.ENTITY_TYPE,
+        KITSUNE_KEY,
+        EntityType.Builder.<KitsuneEntity>create(KitsuneEntity::new, SpawnGroup.CREATURE)
+            .dimensions(0.6f, 0.7f)
+            .maxTrackingRange(8)
+            .build(CuteDifficult.MOD_ID + ":kitsune")
+    );
+
+    public static final RegistryKey<EntityType<?>> HOLLOW_LORD_KEY =
+        RegistryKey.of(Registries.ENTITY_TYPE.getKey(),
+            Identifier.of(CuteDifficult.MOD_ID, "hollow_lord"));
+
+    public static final EntityType<HollowLordEntity> HOLLOW_LORD = Registry.register(
+        Registries.ENTITY_TYPE,
+        HOLLOW_LORD_KEY,
+        EntityType.Builder.<HollowLordEntity>create(HollowLordEntity::new, SpawnGroup.MONSTER)
+            .dimensions(1.2f, 3.8f)
+            .maxTrackingRange(10)
+            .build(CuteDifficult.MOD_ID + ":hollow_lord")
     );
 
     private ModEntities() {}
 
     public static void init() {
         FabricDefaultAttributeRegistry.register(KITSUNE, FoxEntity.createFoxAttributes());
-        CuteDifficult.LOGGER.info("[CuteDifficult] Registered entity type: cutedifficult:kitsune");
+        FabricDefaultAttributeRegistry.register(HOLLOW_LORD, HollowLordEntity.createHollowLordAttributes());
+        CuteDifficult.LOGGER.info("[CuteDifficult] Registered entity types: kitsune, hollow_lord");
     }
 }

@@ -93,6 +93,18 @@ public final class FoxOfferingHandler {
         FoxPersonality personality = data.personality;
 
         if (element.isAccepted(stack.getItem())) {
+            // Kegare check: a polluted player's offerings are often rejected —
+            // the spirits sense the stain. 50% failure at TAINTED and above.
+            SpiritData.KarmaTier ktier = SpiritData.karmaTier(server, player);
+            if (ktier != SpiritData.KarmaTier.PURE && world.random.nextFloat() < 0.5f) {
+                world.spawnParticles(net.minecraft.particle.ParticleTypes.SMOKE,
+                    fox.getX(), fox.getY() + 0.5, fox.getZ(), 10, 0.3, 0.3, 0.3, 0.02);
+                player.sendMessage(net.minecraft.text.Text.literal(
+                    "The kitsune recoils from your offering — it senses the stain on you.")
+                    .formatted(net.minecraft.util.Formatting.DARK_RED, net.minecraft.util.Formatting.ITALIC), true);
+                stack.decrement(1); // offering consumed but wasted
+                return ActionResult.SUCCESS;
+            }
             Element.OfferingTier tier = element.offeringTier(stack.getItem());
             return handleCorrect(player, world, fox, data, element, personality, stack, server, now, tier);
         } else if (element.isOffended(stack.getItem())) {

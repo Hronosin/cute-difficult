@@ -57,6 +57,15 @@ public final class FoxHostility {
         // Great Blessing overrides everything else.
         if (ResonanceBlessingHandler.hasGreatBlessing(target)) return false;
 
+        // Kegare: a defiled player (karma 100+) is reviled by all kitsune —
+        // the stain overrides trust entirely. Even a friendly fox turns.
+        if (target.getServer() != null) {
+            SpiritData.KarmaTier ktier = SpiritData.karmaTier(target.getServer(), target);
+            if (ktier == SpiritData.KarmaTier.DEFILED || ktier == SpiritData.KarmaTier.CURSED) {
+                return true;
+            }
+        }
+
         KitsuneData data = FoxStorage.peekCache(fox);
         if (data == null) {
             // No data cached yet — treat as hostile (default-aggressive new fox).
