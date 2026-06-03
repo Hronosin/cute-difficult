@@ -6,7 +6,7 @@ Versioning was informal during development. v1.0.0-beta is the **first public re
 
 ---
 
-## v1.2.0 — The Hollowing Update
+## v1.2.0-beta — The Hollowing Update
 
 ### A small confession first
 
@@ -16,21 +16,33 @@ With that out of the way:
 
 ### Added — The Hollow Lord (final boss)
 
-- A true endgame boss, summoned in the End. Drop a Nether Star among four fully-charged Respawn Anchors near the center; a black hole forms, the anchors detonate, and the Lord descends.
-- Summoning **seals the exit portal** — there is no walking away from this fight.
+- A true endgame boss, summoned in the End through a ritual of your own discovery. Those who have hollowed out the cosmos and gathered its stars will find the way to call it down. (No, we're not telling you how. Experiment in the End.)
+- The summoning **seals the exit portal** — there is no walking away from this fight.
 - **Four phases**, each harder than the last: The Watching → The Hollowing → The Devouring → The Last Light. The boss bar renames and turns blood-red as it falls.
 - **Telegraphed attacks, not hitscan.** Lasers paint a warning beam before they fire; lightning marks the ground before it strikes. Read the tells, dodge the death. (You asked, we listened.)
 - Explosive fireballs, fire-breath cones, random hollow-curses (Wither/Poison/Slowness/Blindness), and ramming dash maneuvers.
 - **Crystal turrets** — the End crystals around the arena fire on you. Destroy them to silence them, or suffer.
 - A **cinematic scripted death**: the Lord implodes, ruptures the arena in an expanding shockwave ring, and unmakes itself — without ever breaking the exit portal.
-- **The way home is a puzzle.** The Lord drops 2 Nether Stars and 4 End Crystals. Figuring out how to leave is on you. (Hint: you already know how End crystals and the exit portal interact. The clever interrupt the ritual. The rest fight a vanilla dragon.)
+- **The way home is a puzzle.** The Lord drops 2 Nether Stars and 4 End Crystals, then leaves you sealed in. How you reopen the path is for you to work out — the answer is something every End veteran already knows, even if they've never thought to use it this way.
 - Slaying the Hollow Lord is the **Great Purification** — see Karma below.
-
 ### Added — Kitsune finally spawn (and grow)
 
 - Kitsune now spawn naturally across the Overworld, **their element chosen by biome**: Kori in the frozen places, Mizu in oceans and rivers, Mori in forests and taiga, Daichi in the mountains, Kasai in badlands, Kaminari on the savanna, Kaze on the open plains — with a ~15% wildcard chance, because spirits are not predictable.
 - **Tails grow over time.** Young foxes are common; ancient nine-tailed Kyuubi are rare and earned. A kitsune ages on its own, and a **well-fed fox grows ~50% faster** — reach Kyuubi in roughly 10 in-game days of care, or ~15 left to fend for itself.
+### Added — The Horizon (a new dimension)
 
+- A vast, silent void dimension reached through a new crafted item, the **Interstellar**. Empty space, fixed twilight, no mobs — just you and the dark.
+- **The sky is alive.** World-pinned celestial objects drift past as you travel: stars, colored nebulae, and slow inward-spiraling singularities. Comets streak across your view.
+- **Everyone gets their own island.** Entering the Horizon places you on a personal platform unique to you, far from anyone else's.
+- **Two ways out.** Step back through normally to return to the *exact* spot you left from — the Horizon remembers. Or **sneak** as you leave to exit somewhere new, your Horizon position scaled out into the world (handy for covering huge distances — the Horizon is compressed relative to the Overworld).
+### Added — The Interstellar (dimensional key)
+
+- A new **Epic** crafting item and the only way into the Horizon. A symmetric recipe built around raw cosmic power:
+    - **4 Netherite Blocks** in the corners
+    - **2 Ender Eyes** top-center and bottom-center
+    - **2 Comparators** left-center and right-center
+    - **1 Nether Star** in the very center
+- Hold it, use it, and the void opens.
 ### Added — The Karma / Kegare system
 
 Karma was a number that did almost nothing and could only ever go up. Now it is a full cycle of pollution and redemption, capped at 200, across four tiers (Pure → Tainted → Defiled → Cursed).
@@ -38,16 +50,13 @@ Karma was a number that did almost nothing and could only ever go up. Now it is 
 - **Consequences of a stained spirit:** passive Unluck (and Weakness when Cursed), offerings rejected 50% of the time, blessings withdrawn entirely, more hostile mobs drawn to you, and an oppressive dread in the air.
 - **The kitsune turn on you.** At Defiled karma and above, every kitsune becomes hostile *regardless of trust* — even ones that loved you. Linger near them and they lay element-themed **curses** on you.
 - **Redemption is only through peaceful, life-giving acts** — never more violence. Harvest mature crops (−1), breed animals (−3), trade with villagers (−5). And slaying the Hollow Lord performs a **Great Purification** (−100), washing deep stain from your spirit.
-
 ### Added — Commands
 
 - `/cd fox stage` — a public (no-OP) command: look at a kitsune and learn its growth stage (young → matured → venerable → ancient → Kyuubi), with a little flavor.
 - `/cd enchant <marker> [level]` — (OP) apply any of the custom enhanced enchantments directly to your held item, with tab-completion for every marker.
-
 ### Changed — Data storage rebuilt for safety
 
 - Spirit and Karma no longer live in scoreboards (fragile, player-visible, wiped by commands). They now persist in proper world save data. Invisible, durable, and command-proof. Existing players start fresh — old scoreboard data was being lost across updates anyway.
-
 ### Fixed
 
 - **Kitsune not spawning in the world.** See the confession above. Fixed.
@@ -57,7 +66,7 @@ Karma was a number that did almost nothing and could only ever go up. Now it is 
 
 ---
 
-
+## v1.1.0-beta
 
 The world now answers to the sky. This update adds three intertwined celestial systems, a full enhanced-enchantment economy, smarter bosses, and per-element kitsune passives — turning the spiritual layer from a side path into a science you have to study.
 
